@@ -49,17 +49,36 @@ test('GameBoard.board is a board of "A-J" length and "1-10" height', () => {
   expect(GameBoard().board).toEqual(testBoard);
 })
 
-test('GameBoard should be able to place one ship at specific coordinates', () => {
+test('Gameboard should call the Ship\'s \'hit\' function if an attack hits a ship', () => {
+  const mockShip = (mockLength) => {
+    const length = mockLength;
+    const hit = jest.fn()
+    return { length, hit }
+  }
+
+  const myShip = mockShip(4);
   const newBoard = GameBoard();
-  expect(newBoard.placeShip(['A1', 'A2', 'A3', 'A4'])).toEqual({ '4': ['A1', 'A2', 'A3', 'A4']})
+  newBoard.placeShip(['G5', 'G6', 'G7', 'G8'], myShip);
+  newBoard.receiveAttack('G6');
+  expect(myShip.hit).toHaveBeenCalled();
 })
 
-test('GameBoard should be able to place multiple ships at specific coordinates', () => {
+test('Gameboard should not call the Ship\'s \'hit\' function if an attack misses a ship', () => {
+  const mockShip = (mockLength) => {
+    const length = mockLength;
+    const hit = jest.fn()
+    return { length, hit }
+  }
+
+  const myShip = mockShip(3);
   const newBoard = GameBoard();
-  newBoard.placeShip(['A1', 'B1', 'C1', 'D1']);
-  expect(newBoard.placeShip(['J9', 'J10'])).toEqual({ '4': ['A1', 'B1', 'C1', 'D1'], '2': ['J9', 'J10'] })
+  newBoard.placeShip(['B7', 'B8', 'B9'], myShip);
+  newBoard.receiveAttack('B6');
+  expect(myShip.hit).not.toHaveBeenCalled();
 })
 
-// GameBoards should have a receiveAttack() function that takes a pair of coordinates,
-// determines whether or not the attack hit a ship and then sends the 'hit' function
+
+// make a 'populateBoard' function
+// it makes ships and calls placeShip()
+// test it
 

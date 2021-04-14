@@ -19,8 +19,8 @@ function GameBoard() {
   let occupiedMap = {};
 
 
-  const placeShip = (coords) => {
-    occupiedMap[coords.length] = coords;
+  const placeShip = (coords, ship) => {
+    occupiedMap[coords.length] = [coords, ship];
     return occupiedMap;
   }
 
@@ -35,9 +35,18 @@ function GameBoard() {
     return board;
   }
 
+  const receiveAttack = (coord) => {
+    Object.values(occupiedMap).forEach((pair) => {
+      if (pair[0].includes(coord)) {
+        const index = pair[0].findIndex((x) => x === coord);
+        pair[1].hit(index);
+      }
+    })
+  }
+
   const board = createBoard();
 
-  return { board, placeShip };
+  return { board, placeShip, occupiedMap, receiveAttack };
 }
 
 export default GameBoard;
