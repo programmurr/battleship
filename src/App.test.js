@@ -77,6 +77,12 @@ test('Gameboard should not call the Ship\'s \'hit\' function if an attack misses
   expect(myShip.hit).not.toHaveBeenCalled();
 })
 
+test('Gameboard.initialize() places 10 ships on the board', () => {
+  const newBoard = GameBoard();
+  newBoard.initialize();
+  expect(newBoard.occupiedCoords.length).toBe(10);
+})
+
 
 // make a 'populateBoard' function
 // it makes ships and calls placeShip()
