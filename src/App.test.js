@@ -1,5 +1,6 @@
 import Ship from './components/Ship';
 import GameBoard from './components/GameBoard';
+import Player from './components/Player';
 
 var lodash = require('lodash')
 
