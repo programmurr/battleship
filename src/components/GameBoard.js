@@ -17,6 +17,7 @@ var lodash = require('lodash')
 function GameBoard() {
 
   let occupiedCoords = [];
+  let missedAttacks = [];
 
   const createBoard = () => {
     const height = lodash.range(1, 11);
@@ -31,64 +32,45 @@ function GameBoard() {
 
   const board = createBoard();
 
-  const generateCoord = (shipLength) => {
-    let coord = Math.floor(Math.random() * 10);
-    while ((coord + shipLength) > 9) {
-      coord = Math.floor(Math.random() * 10);
-    }
-    return coord;
-  }
-
   const placeShip = (coords, ship) => {
     occupiedCoords.push([ship, coords]);
     return occupiedCoords;
   }
 
-  const initialize = () => {
-    const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
-    ships.forEach((shipLength) => {
-      const x = generateCoord(shipLength);
-      const y = generateCoord(shipLength);
-      const initialCoord = board[x][y];
-      const coordinates = [ initialCoord ];
-      const direction = Math.floor(Math.random() * (3 - 1) + 1);
-      if (direction === 1) {
-        for (let i = x + 1; i <= x + (shipLength - 1); i++) {
-          const coord = board[i][y];
-          if (coord === 'occupied') {
-            i--;
-          } else {
-            board[i][y] = 'occupied';
-            coordinates.push(coord);
-          }
-        }
-      } else {
-        for (let i = y + 1; i <= y + (shipLength - 1); i++) {
-          const coord = board[x][i];
-          if (coord === 'occupied') {
-            i--;
-          } else {
-            board[i][y] = 'occupied';
-            coordinates.push(coord);
-          }
-        }
-      }
-      const newShip = Ship(shipLength);
-      placeShip(coordinates, newShip);
-    });
-  }
-
-
   const receiveAttack = (coord) => {
+    // pair[0] is the ship
+    // pair[1] is an array of the ship coords
     occupiedCoords.forEach((pair) => {
       if (pair[1].includes(coord)) {
         const index = pair[1].findIndex((x) => x === coord);
         pair[0].hit(index);
+      } else {
+        missedAttacks.push(coord);
       }
     })
   }
 
-  return { initialize, board, placeShip, receiveAttack, occupiedCoords };
+  const allShipsSunk = () => {
+    let counter = 0;
+    occupiedCoords.forEach((pair) => {
+      if (pair[0].isSunk()) {
+        counter += 1;
+      }
+    });
+    if (counter === 10) {
+      return true;
+    }
+    return false;
+  }
+
+  return { 
+    board, 
+    placeShip, 
+    receiveAttack, 
+    occupiedCoords, 
+    missedAttacks,
+    allShipsSunk 
+  };
 }
 
 export default GameBoard;
