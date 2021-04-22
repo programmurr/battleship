@@ -1,4 +1,4 @@
-function Ship(length) {
+function ShipFactory(length) {
 
   const hull = Array.from({ length: length }).map(() => "");
 
@@ -13,4 +13,4 @@ function Ship(length) {
   return { hull, hit, isSunk };
 }
 
-export default Ship;
+export default ShipFactory;

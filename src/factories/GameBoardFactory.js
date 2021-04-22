@@ -1,8 +1,6 @@
-import Ship from './Ship';
-
 var lodash = require('lodash')
 
-function GameBoard() {
+function GameBoardFactory() {
 
   let occupiedCoords = [];
   let missedAttacks = [];
@@ -61,4 +59,4 @@ function GameBoard() {
   };
 }
 
-export default GameBoard;
+export default GameBoardFactory;
