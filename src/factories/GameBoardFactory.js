@@ -26,14 +26,15 @@ function GameBoardFactory() {
   const receiveAttack = (coord) => {
     // pair[0] is the ship
     // pair[1] is an array of the ship coords
-    occupiedCoords.forEach((pair) => {
+    for (let i = 0; i < occupiedCoords.length; i++) {
+      const pair = occupiedCoords[i];
       if (pair[1].includes(coord)) {
         const index = pair[1].findIndex((x) => x === coord);
         pair[0].hit(index);
-      } else {
-        missedAttacks.push(coord);
+        return;
       }
-    })
+    }
+    missedAttacks.push(coord);
   }
 
   const allShipsSunk = () => {

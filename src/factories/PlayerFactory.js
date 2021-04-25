@@ -33,7 +33,7 @@ function PlayerFactory() {
     }
   }
 
-  return { humanAttack, computerAttack }
+  return { humanAttack, computerAttack, attacks }
 }
 
 export default PlayerFactory;
