@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import Boards from './components/Boards';
 import GameBoardFactory from './factories/GameBoardFactory';
 import ShipFactory from './factories/ShipFactory';
 import PlayerFactory from './factories/PlayerFactory';
+
 
 function App() {
 
@@ -55,21 +55,24 @@ function App() {
   }
 
   useEffect(() => {
-    console.log('Board effect')
+    console.log('Initialize Boards')
     initializeBoards('Player', playerCoords);
     initializeBoards('Computer', computerCoords);
   }, [])
 
   // Renders the changes on save, but not when immediately updated.
-  // To see this in action, comment/uncomment line 70
+  // To see this in action, comment/uncomment line 71 then save
   // Try creating separate board components? One for player, one for computer?
   const handleClick = (coord) => {
+    const newPlayer = {};
+    const newBoard = {};
     try {
       player.humanAttack(coord);
       computerBoard.receiveAttack(coord);
-      console.log(computerBoard)
-      setPlayer(player);
-      setComputerBoard(computerBoard)
+      Object.assign(newPlayer, player);
+      Object.assign(newBoard, computerBoard);
+      setPlayer(newPlayer);
+      setComputerBoard(newBoard)
     } catch (e) {
       alert(e.message)
     }

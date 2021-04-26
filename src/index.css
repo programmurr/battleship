@@ -11,6 +11,7 @@ body {
 
 .App {
   margin-bottom: 1em;
+  text-align: center;
 }
 
 .Header > h1 {
