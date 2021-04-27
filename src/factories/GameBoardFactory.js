@@ -4,6 +4,7 @@ function GameBoardFactory() {
 
   let occupiedCoords = [];
   let missedAttacks = [];
+  let successfulAttacks = [];
 
   const createBoard = () => {
     const height = lodash.range(1, 11);
@@ -31,7 +32,7 @@ function GameBoardFactory() {
       if (pair[1].includes(coord)) {
         const index = pair[1].findIndex((x) => x === coord);
         pair[0].hit(index);
-        return;
+        return pair;
       }
     }
     missedAttacks.push(coord);
@@ -56,6 +57,7 @@ function GameBoardFactory() {
     receiveAttack, 
     occupiedCoords, 
     missedAttacks,
+    successfulAttacks,
     allShipsSunk 
   };
 }

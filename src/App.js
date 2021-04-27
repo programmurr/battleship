@@ -60,19 +60,17 @@ function App() {
     initializeBoards('Computer', computerCoords);
   }, [])
 
-  // Renders the changes on save, but not when immediately updated.
-  // To see this in action, comment/uncomment line 71 then save
-  // Try creating separate board components? One for player, one for computer?
   const handleClick = (coord) => {
-    const newPlayer = {};
-    const newBoard = {};
+    const newPlayer = Object.assign({}, player);
+    const newComputerBoard = Object.assign({}, computerBoard);
     try {
-      player.humanAttack(coord);
-      computerBoard.receiveAttack(coord);
-      Object.assign(newPlayer, player);
-      Object.assign(newBoard, computerBoard);
+      const attackedCells = newComputerBoard.receiveAttack(coord);
+      if (attackedCells !== undefined) {
+        newComputerBoard.successfulAttacks.push(coord);
+      }
+      newPlayer.humanAttack(coord);
       setPlayer(newPlayer);
-      setComputerBoard(newBoard)
+      setComputerBoard(newComputerBoard)
     } catch (e) {
       alert(e.message)
     }

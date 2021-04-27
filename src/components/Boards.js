@@ -1,7 +1,11 @@
+import React, { useEffect, useState } from 'react';
+import BlackCircle from '../img/black-circle.svg';
+import RedCircle from '../img/red-circle.svg';
+
 function Boards(props) {
 
   const { playerBoard, computerBoard } = props;
-
+  
   const handleClick = (event) => {
     props.handleClick(event.target.textContent)
   }
@@ -15,7 +19,7 @@ function Boards(props) {
             <div
               key={cell} 
               className="PlayerCell"
-              >
+            >
               {cell}
             </div>
           ))
@@ -24,23 +28,45 @@ function Boards(props) {
       <h2 className="ComputerBoardHeader">Computer Board</h2>
       <div className="ComputerBoard">
         {computerBoard.board.map((row) => (
-          row.map((cell) => (
-            computerBoard.missedAttacks.includes(cell) ? 
-              <div 
-                key={cell} 
-                className="ComputerCell"
-                onClick={handleClick}
+          row.map((cell) => {
+            if (computerBoard.missedAttacks.includes(cell)) {
+              return (
+                <div 
+                  key={cell} 
+                  className="ComputerCell"
                 >
-                O
-              </div>
-            : <div 
-                key={cell} 
-                className="ComputerCell"
-                onClick={handleClick}
+                  <img 
+                    className="MissIcon" 
+                    src={BlackCircle} 
+                    alt="Missed Attack"
+                  />
+                </div>
+              )
+            } else if (computerBoard.successfulAttacks.includes(cell)) {
+              return (
+                <div 
+                  key={cell} 
+                  className="ComputerCell"
                 >
-                {cell}
-              </div>
-          ))
+                  <img 
+                    className="HitIcon" 
+                    src={RedCircle} 
+                    alt="Missed Attack"
+                  />
+                </div>
+              )
+            } else {
+              return (
+                <div 
+                  key={cell} 
+                  className="ComputerCell"
+                  onClick={handleClick}
+                >
+                  {cell}
+                </div>
+              )
+            }
+          })
         ))}
       </div>
     </div>
