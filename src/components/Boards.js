@@ -15,14 +15,44 @@ function Boards(props) {
       <h2 className="PlayerBoardHeader">Player Board</h2>
       <div className="PlayerBoard">
         {playerBoard.board.map((row) => (
-          row.map((cell) => (
-            <div
-              key={cell} 
-              className="PlayerCell"
-            >
-              {cell}
-            </div>
-          ))
+          row.map((cell) => {
+            if (playerBoard.missedAttacks.includes(cell)) {
+              return (
+                <div 
+                  key={cell} 
+                  className="PlayerCell"
+                >
+                  <img 
+                    className="MissIcon" 
+                    src={BlackCircle} 
+                    alt="Missed Attack"
+                  />
+                </div>
+              )
+            } else if (playerBoard.successfulAttacks.includes(cell)) {
+              return (
+                <div 
+                  key={cell} 
+                  className="PlayerCell"
+                >
+                  <img 
+                    className="HitIcon" 
+                    src={RedCircle} 
+                    alt="Missed Attack"
+                  />
+                </div>
+              )
+            } else {
+              return (
+                <div 
+                  key={cell} 
+                  className="PlayerCell"
+                >
+                  {cell}
+                </div>
+              )
+            }
+          })
         ))}
       </div>
       <h2 className="ComputerBoardHeader">Computer Board</h2>

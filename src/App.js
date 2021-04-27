@@ -13,6 +13,9 @@ function App() {
   const [ player, setPlayer ] = useState(PlayerFactory());
   const [ computer, setComputer ] = useState(PlayerFactory());
 
+  const [ userTurn, setUserTurn ] = useState(true);
+  let [ roundCounter, setRoundCounter ] = useState(0);
+
   const playerCoords = [
     ['A1', 'A2', 'A3', 'A4'],
     ['B1', 'B2', 'B3'],
@@ -54,25 +57,55 @@ function App() {
     }
   }
 
+
+  // investigate problem with attacks below
+  const gameLoop = () => {
+    if (userTurn === false) {
+      const newComputer = Object.assign({}, computer);
+      const newPlayerBoard = Object.assign({}, playerBoard);
+      
+      const computerAttack = newComputer.computerAttack();
+      const attackedCell = newPlayerBoard.receiveAttack(computerAttack);
+
+      if (attackedCell === undefined) {
+        newPlayerBoard.missedAttacks.push(attackedCell);
+      } else {
+        newPlayerBoard.successfulAttacks.push(attackedCell);
+      }
+
+      console.log(newPlayerBoard);
+      setPlayerBoard(newPlayerBoard);
+      setComputer(newComputer);
+      setUserTurn(true);
+      setRoundCounter(roundCounter += 1);
+    }
+  }
+
   useEffect(() => {
-    console.log('Initialize Boards')
-    initializeBoards('Player', playerCoords);
-    initializeBoards('Computer', computerCoords);
-  }, [])
+    if (roundCounter === 0) {
+      console.log('Initialize Boards')
+      initializeBoards('Player', playerCoords);
+      initializeBoards('Computer', computerCoords);
+    }
+    gameLoop();
+  })
 
   const handleClick = (coord) => {
-    const newPlayer = Object.assign({}, player);
-    const newComputerBoard = Object.assign({}, computerBoard);
-    try {
-      const attackedCells = newComputerBoard.receiveAttack(coord);
-      if (attackedCells !== undefined) {
-        newComputerBoard.successfulAttacks.push(coord);
+    if (userTurn) {
+      const newPlayer = Object.assign({}, player);
+      const newComputerBoard = Object.assign({}, computerBoard);
+      try {
+        const attackedCells = newComputerBoard.receiveAttack(coord);
+        if (attackedCells !== undefined) {
+          newComputerBoard.successfulAttacks.push(coord);
+        }
+        newPlayer.humanAttack(coord);
+        setUserTurn(false);
+        setPlayer(newPlayer);
+        setComputerBoard(newComputerBoard)
+      } catch (e) {
+        alert(e.message)
       }
-      newPlayer.humanAttack(coord);
-      setPlayer(newPlayer);
-      setComputerBoard(newComputerBoard)
-    } catch (e) {
-      alert(e.message)
     }
   }
 
@@ -81,6 +114,14 @@ function App() {
       <div className="Header">
         <h1>Battleship</h1>
       </div>
+      {userTurn ? 
+          <div className="Turn">
+            Your Turn!
+          </div>
+        : <div className="Turn">
+            Computer's Turn!
+          </div>
+      }
       <Boards 
         playerBoard={playerBoard}
         computerBoard={computerBoard}
