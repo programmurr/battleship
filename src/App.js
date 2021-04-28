@@ -42,6 +42,12 @@ function App() {
     ['A10'],
   ]
 
+  const sleep = (delay) => {
+    return new Promise((resolve) => {
+      return setTimeout(resolve, delay);
+    });
+  }
+
 
   const initializeBoards = (identifier, coords) => {
     if (identifier === 'Player') {
@@ -58,22 +64,18 @@ function App() {
   }
 
 
-  // investigate problem with attacks below
-  const gameLoop = () => {
+  const computerTurn = () => {
     if (userTurn === false) {
       const newComputer = Object.assign({}, computer);
       const newPlayerBoard = Object.assign({}, playerBoard);
       
-      const computerAttack = newComputer.computerAttack();
-      const attackedCell = newPlayerBoard.receiveAttack(computerAttack);
-
-      if (attackedCell === undefined) {
-        newPlayerBoard.missedAttacks.push(attackedCell);
-      } else {
-        newPlayerBoard.successfulAttacks.push(attackedCell);
+      const computerAttacks = newComputer.computerAttack();
+      const currentAttack = computerAttacks.slice(computerAttacks.length - 1);
+      const attackedCell = newPlayerBoard.receiveAttack(currentAttack[0]);
+      if (attackedCell !== undefined) {
+        newPlayerBoard.successfulAttacks.push(currentAttack[0]);
       }
 
-      console.log(newPlayerBoard);
       setPlayerBoard(newPlayerBoard);
       setComputer(newComputer);
       setUserTurn(true);
@@ -81,14 +83,18 @@ function App() {
     }
   }
 
+  // Initialize Boards on page load
   useEffect(() => {
     if (roundCounter === 0) {
-      console.log('Initialize Boards')
       initializeBoards('Player', playerCoords);
       initializeBoards('Computer', computerCoords);
     }
-    gameLoop();
-  })
+  }, [])
+
+  // Trigger game loop after every refresh
+  useEffect(() => {
+    setTimeout(() => computerTurn(), 2000);
+  }, [userTurn])
 
   const handleClick = (coord) => {
     if (userTurn) {
