@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BlackCircle from '../img/black-circle.svg';
 import RedCircle from '../img/red-circle.svg';
 
@@ -7,7 +7,7 @@ function Boards(props) {
   const { playerBoard, computerBoard } = props;
   
   const handleClick = (event) => {
-    props.handleClick(event.target.textContent)
+    props.handlePlayerTurn(event.target.textContent)
   }
 
   return (
@@ -18,10 +18,7 @@ function Boards(props) {
           row.map((cell) => {
             if (playerBoard.missedAttacks.includes(cell)) {
               return (
-                <div 
-                  key={cell} 
-                  className="PlayerCell"
-                >
+                <div key={cell} className="PlayerCell">
                   <img 
                     className="MissIcon" 
                     src={BlackCircle} 
@@ -31,10 +28,7 @@ function Boards(props) {
               )
             } else if (playerBoard.successfulAttacks.includes(cell)) {
               return (
-                <div 
-                  key={cell} 
-                  className="PlayerCell"
-                >
+                <div key={cell} className="PlayerCell">
                   <img 
                     className="HitIcon" 
                     src={RedCircle} 
@@ -44,10 +38,7 @@ function Boards(props) {
               )
             } else {
               return (
-                <div 
-                  key={cell} 
-                  className="PlayerCell"
-                >
+                <div key={cell} className="PlayerCell">
                   {cell}
                 </div>
               )
@@ -61,10 +52,7 @@ function Boards(props) {
           row.map((cell) => {
             if (computerBoard.missedAttacks.includes(cell)) {
               return (
-                <div 
-                  key={cell} 
-                  className="ComputerCell"
-                >
+                <div key={cell} className="ComputerCell">
                   <img 
                     className="MissIcon" 
                     src={BlackCircle} 
@@ -74,10 +62,7 @@ function Boards(props) {
               )
             } else if (computerBoard.successfulAttacks.includes(cell)) {
               return (
-                <div 
-                  key={cell} 
-                  className="ComputerCell"
-                >
+                <div key={cell} className="ComputerCell">
                   <img 
                     className="HitIcon" 
                     src={RedCircle} 
@@ -87,11 +72,7 @@ function Boards(props) {
               )
             } else {
               return (
-                <div 
-                  key={cell} 
-                  className="ComputerCell"
-                  onClick={handleClick}
-                >
+                <div key={cell} className="ComputerCell" onClick={handleClick}>
                   {cell}
                 </div>
               )

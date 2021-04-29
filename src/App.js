@@ -42,13 +42,6 @@ function App() {
     ['A10'],
   ]
 
-  const sleep = (delay) => {
-    return new Promise((resolve) => {
-      return setTimeout(resolve, delay);
-    });
-  }
-
-
   const initializeBoards = (identifier, coords) => {
     if (identifier === 'Player') {
       coords.forEach((coord) => {
@@ -63,19 +56,18 @@ function App() {
     }
   }
 
-
   const computerTurn = () => {
+    if (playerBoard.allShipsSunk()) {
+      alert('Game over! The Computers won!');
+      setUpNewGame();
+      return;
+    }
     if (userTurn === false) {
       const newComputer = Object.assign({}, computer);
       const newPlayerBoard = Object.assign({}, playerBoard);
-      
       const computerAttacks = newComputer.computerAttack();
       const currentAttack = computerAttacks.slice(computerAttacks.length - 1);
-      const attackedCell = newPlayerBoard.receiveAttack(currentAttack[0]);
-      if (attackedCell !== undefined) {
-        newPlayerBoard.successfulAttacks.push(currentAttack[0]);
-      }
-
+      newPlayerBoard.receiveAttack(currentAttack[0]);
       setPlayerBoard(newPlayerBoard);
       setComputer(newComputer);
       setUserTurn(true);
@@ -83,32 +75,42 @@ function App() {
     }
   }
 
-  // Initialize Boards on page load
   useEffect(() => {
     if (roundCounter === 0) {
       initializeBoards('Player', playerCoords);
       initializeBoards('Computer', computerCoords);
     }
-  }, [])
+  })
 
-  // Trigger game loop after every refresh
   useEffect(() => {
-    setTimeout(() => computerTurn(), 2000);
+    if (computerBoard.allShipsSunk()) {
+      alert('Game over! Humans won!');
+      setUpNewGame();
+      return;
+    }
+    setTimeout(() => computerTurn(), 0);
   }, [userTurn])
 
-  const handleClick = (coord) => {
+  const setUpNewGame = () => {
+    setUserTurn(true);
+    setPlayer(PlayerFactory());
+    setComputer(PlayerFactory());
+    setPlayerBoard(GameBoardFactory());
+    setComputerBoard(GameBoardFactory());
+    setRoundCounter(0);
+  }
+
+  const handlePlayerTurn = (coord) => {
     if (userTurn) {
       const newPlayer = Object.assign({}, player);
       const newComputerBoard = Object.assign({}, computerBoard);
       try {
-        const attackedCells = newComputerBoard.receiveAttack(coord);
-        if (attackedCells !== undefined) {
-          newComputerBoard.successfulAttacks.push(coord);
-        }
+        newComputerBoard.receiveAttack(coord);
         newPlayer.humanAttack(coord);
         setUserTurn(false);
         setPlayer(newPlayer);
-        setComputerBoard(newComputerBoard)
+        setComputerBoard(newComputerBoard);
+        setRoundCounter(roundCounter += 1);
       } catch (e) {
         alert(e.message)
       }
@@ -131,7 +133,7 @@ function App() {
       <Boards 
         playerBoard={playerBoard}
         computerBoard={computerBoard}
-        handleClick={handleClick}
+        handlePlayerTurn={handlePlayerTurn}
       />
     </div>
   );

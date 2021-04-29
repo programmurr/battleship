@@ -32,6 +32,7 @@ function GameBoardFactory() {
       if (pair[1].includes(coord)) {
         const index = pair[1].findIndex((x) => x === coord);
         pair[0].hit(index);
+        successfulAttacks.push(coord);
         return pair;
       }
     }

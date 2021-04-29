@@ -196,6 +196,21 @@ describe('GameBoardFactory', () => {
     newBoard.placeShip(['J9'], aliveShip(1));
     expect(newBoard.allShipsSunk()).toBe(false);
   });
+
+  it('#successfulAttacks is an array of successful attacks against the board', () => {
+    const mockShip = (mockLength) => {
+      const length = mockLength;
+      const hit = jest.fn()
+      return { length, hit }
+    }
+    const myShip = mockShip(4);
+    const newBoard = GameBoardFactory();
+    newBoard.placeShip(['A1', 'A2', 'A3', 'A4'], myShip);
+    newBoard.receiveAttack('A1');
+    newBoard.receiveAttack('H9');
+    newBoard.receiveAttack('A2');
+    expect(newBoard.successfulAttacks).toEqual(['A1', 'A2']);
+  })
 })
 
 describe('PlayerFactory', () => {
