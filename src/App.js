@@ -68,6 +68,9 @@ function App() {
       const computerAttacks = newComputer.computerAttack();
       const currentAttack = computerAttacks.slice(computerAttacks.length - 1);
       newPlayerBoard.receiveAttack(currentAttack[0]);
+      // if (newPlayerBoard.receiveAttack(currentAttack[0]) === undefined) {
+      //   computer.calculateNextAttack(currentAttack[0], newPlayerBoard.board);
+      // }
       setPlayerBoard(newPlayerBoard);
       setComputer(newComputer);
       setUserTurn(true);

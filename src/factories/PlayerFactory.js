@@ -33,7 +33,50 @@ function PlayerFactory() {
     }
   }
 
-  return { humanAttack, computerAttack, attacks }
+  const locatedCoordIndexes = (coord, board) => {
+    for (let i = 0; i < board.length; i++) {
+      const row = board[i];
+      if (row.includes(coord)) {
+        const nestedIndex = row.findIndex((pos) => pos === coord);
+        return [i, nestedIndex];
+      }
+    }
+  }
+
+  const getCoords = (xandYindexes, board) => {
+    let coordsArray = [];
+    const x = xandYindexes[0];
+    const y = xandYindexes[1];
+    try {
+      const allRows = [board[x - 1], board[x], board[x + 1]];
+      const rows = allRows.filter((row) => row !== undefined);
+      rows.forEach((row) => {
+        coordsArray.push(row[y - 1]);
+        coordsArray.push(row[y]);
+        coordsArray.push(row[y + 1]);
+      })
+    } catch (err) {
+      console.log(err.message);
+      console.log(coordsArray);
+    }
+    return coordsArray;
+  }
+
+  const cleanCoords = (coords, originalCoord) => {
+    return coords.filter(
+      (coord) => coord !== undefined 
+        && coord !== originalCoord
+        && !attacks.includes(coord)
+    );
+  }
+
+  const calculateNextAttack = (coord, board) => {
+    const xAndYIndexes = locatedCoordIndexes(coord, board);
+    const coords = getCoords(xAndYIndexes, board);
+    return cleanCoords(coords, coord);
+  }
+
+  return { humanAttack, computerAttack, attacks, calculateNextAttack }
 }
 
 export default PlayerFactory;
