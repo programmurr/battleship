@@ -255,7 +255,7 @@ describe('PlayerFactory', () => {
     expect(uniqueCells.length).toBe(attackedCells.length);
   })
 
-  it('#calculateNextAttack calculates coordinates adjascent to a successful hit', () => {
+  it('#calculateNextAttackRange calculates coordinates adjascent to a successful hit', () => {
     const player = PlayerFactory();
     const height = lodash.range(1, 11);
     const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
@@ -264,12 +264,12 @@ describe('PlayerFactory', () => {
         return `${char}${num}`;
       });
     });
-    expect(player.calculateNextAttack('C3', mockBoard)).toEqual(
+    expect(player.calculateNextAttackRange('C3', mockBoard)).toEqual(
       ['B2', 'C2', 'D2', 'B3', 'D3', 'B4', 'C4', 'D4']
     )
   })
 
-  it('#calculateNextAttack does not calculate coordinates beyond the range of the board', () => {
+  it('#calculateNextAttackRange does not calculate coordinates beyond the range of the board', () => {
     const player = PlayerFactory();
     const height = lodash.range(1, 11);
     const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
@@ -278,12 +278,12 @@ describe('PlayerFactory', () => {
         return `${char}${num}`;
       });
     });
-    expect(player.calculateNextAttack('J5', mockBoard)).toEqual(
+    expect(player.calculateNextAttackRange('J5', mockBoard)).toEqual(
       ['I4', 'J4', 'I5', 'I6', 'J6']
     )
   })
 
-  it('#calculateNextAttack does not include attacks already made by the player', () => {
+  it('#calculateNextAttackRange does not include attacks already made by the player', () => {
     const player = PlayerFactory();
     const height = lodash.range(1, 11);
     const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
@@ -295,8 +295,29 @@ describe('PlayerFactory', () => {
     player.attacks.push('E9');
     player.attacks.push('F9');
     player.attacks.push('F10');
-    expect(player.calculateNextAttack('F10', mockBoard)).toEqual(
+    expect(player.calculateNextAttackRange('F10', mockBoard)).toEqual(
       ['G9', 'E10', 'G10']
+    )
+  })
+
+  it('#calculateNextAttackRange concatenates attacks', () => {
+    const player = PlayerFactory();
+    const height = lodash.range(1, 11);
+    const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
+    const mockBoard = height.map((num) => {
+      return length.map((char) => {
+        return `${char}${num}`;
+      });
+    });
+
+    player.attacks.push('A1');
+    player.attacks.push('A2');
+    player.attacks.push('B2');
+    player.calculateNextAttackRange('B2', mockBoard);
+    player.attacks.push('C2');
+    player.attacks.push('B3');
+    expect(player.calculateNextAttackRange('B3', mockBoard)).toEqual(
+      ['B1', 'C1', 'A3', 'C3', 'A4', 'B4', 'C4']
     )
   })
 })

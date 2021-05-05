@@ -18,15 +18,15 @@ function App() {
 
   const playerCoords = [
     ['A1', 'A2', 'A3', 'A4'],
-    ['B1', 'B2', 'B3'],
-    ['C1', 'C2', 'C3'],
-    ['D1', 'D2'],
-    ['E1', 'E2'],
-    ['F1', 'F2'],
-    ['G1'],
-    ['H1'],
-    ['I1'],
-    ['J1'],
+    ['I7', 'I8', 'I9'],
+    ['B8', 'C8', 'D8'],
+    ['C5', 'D5'],
+    ['J1', 'J2'],
+    ['A10', 'B10'],
+    ['H7'],
+    ['G3'],
+    ['E2'],
+    ['F7'],
   ]
 
   const computerCoords = [
@@ -66,11 +66,10 @@ function App() {
       const newComputer = Object.assign({}, computer);
       const newPlayerBoard = Object.assign({}, playerBoard);
       const computerAttacks = newComputer.computerAttack();
-      const currentAttack = computerAttacks.slice(computerAttacks.length - 1);
-      newPlayerBoard.receiveAttack(currentAttack[0]);
-      // if (newPlayerBoard.receiveAttack(currentAttack[0]) === undefined) {
-      //   computer.calculateNextAttack(currentAttack[0], newPlayerBoard.board);
-      // }
+      const currentAttack = computerAttacks[computerAttacks.length - 1];
+      if (newPlayerBoard.receiveAttack(currentAttack) !== undefined) {
+        computer.calculateNextAttackRange(currentAttack, newPlayerBoard.board);
+      }
       setPlayerBoard(newPlayerBoard);
       setComputer(newComputer);
       setUserTurn(true);
