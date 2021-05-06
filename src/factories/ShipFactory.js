@@ -1,4 +1,6 @@
-function ShipFactory(length) {
+function ShipFactory(length, direction = 'H') {
+
+  const orientation = direction;
 
   const hull = Array.from({ length: length }).map(() => "");
 
@@ -10,7 +12,7 @@ function ShipFactory(length) {
     return hull.every((compartment) => compartment === "X");
   }
 
-  return { hull, hit, isSunk };
+  return { hull, hit, isSunk, orientation };
 }
 
 export default ShipFactory;

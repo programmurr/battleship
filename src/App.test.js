@@ -39,6 +39,21 @@ describe('ShipFactory', () => {
     newShip.hit(2);
     expect(newShip.isSunk()).toBe(false);
   });
+
+  it('has a default orientation property of "H"', () => {
+    const newShip = ShipFactory(2);
+    expect(newShip.orientation).toBe('H');
+  });
+
+  it('can set its orientation to "V"', () => {
+    const newShip = ShipFactory(3, 'V');
+    expect(newShip.orientation).toBe('V');
+  });
+
+  it('can set its orientation to "H"', () => {
+    const newShip = ShipFactory(4, 'H');
+    expect(newShip.orientation).toBe('H');
+  });
 })
 
 describe('GameBoardFactory', () => {

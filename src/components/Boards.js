@@ -32,7 +32,7 @@ function Boards(props) {
                   <img 
                     className="HitIcon" 
                     src={RedCircle} 
-                    alt="Missed Attack"
+                    alt="Successful Attack"
                   />
                 </div>
               )

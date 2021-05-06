@@ -3,18 +3,50 @@ import Boards from './components/Boards';
 import GameBoardFactory from './factories/GameBoardFactory';
 import ShipFactory from './factories/ShipFactory';
 import PlayerFactory from './factories/PlayerFactory';
+import Ship4 from './img/ship4.png';
+import Ship3 from './img/ship3.png';
+import Ship2 from './img/ship2.png';
+import Ship1 from './img/ship1.png';
 
 
 function App() {
 
-  const [ playerBoard, setPlayerBoard ] = useState(GameBoardFactory());
-  const [ computerBoard, setComputerBoard ] = useState(GameBoardFactory());
-
   const [ player, setPlayer ] = useState(PlayerFactory());
   const [ computer, setComputer ] = useState(PlayerFactory());
 
+  const [ playerBoard, setPlayerBoard ] = useState(GameBoardFactory());
+  const [ computerBoard, setComputerBoard ] = useState(GameBoardFactory());
+
   const [ userTurn, setUserTurn ] = useState(true);
-  let [ roundCounter, setRoundCounter ] = useState(0);
+  let [ roundCounter, setRoundCounter ] = useState(false);
+
+  // For implementing drag and drop
+  const [ dragItem, setDragItem ] = useState();
+  const [ playerShips, setPlayerShips ] = useState([
+    ShipFactory(4),
+    ShipFactory(3),
+    ShipFactory(3),
+    ShipFactory(2),
+    ShipFactory(2),
+    ShipFactory(2),
+    ShipFactory(1),
+    ShipFactory(1),
+    ShipFactory(1),
+    ShipFactory(1),
+  ]);
+
+  const shipImages = [
+    [Ship4, 4],
+    [Ship3, 3],
+    [Ship3, 3],
+    [Ship2, 2],
+    [Ship2, 2],
+    [Ship2, 2],
+    [Ship1, 1],
+    [Ship1, 1],
+    [Ship1, 1],
+    [Ship1, 1]
+  ];
 
   const playerCoords = [
     ['A1', 'A2', 'A3', 'A4'],
@@ -44,11 +76,15 @@ function App() {
 
   const initializeBoards = (identifier, coords) => {
     if (identifier === 'Player') {
+      // initialize drag and drop
       coords.forEach((coord) => {
         playerBoard.placeShip(coord, ShipFactory(coord.length))
         setPlayerBoard(playerBoard)
       })
     } else {
+      // randomize the coords
+      // match an orientation to the coords
+      // placeShip with coord, Ship and orientation
       coords.forEach((coord) => {
         computerBoard.placeShip(coord, ShipFactory(coord.length))
         setComputerBoard(computerBoard)
@@ -124,14 +160,28 @@ function App() {
       <div className="Header">
         <h1>Battleship</h1>
       </div>
-      {userTurn ? 
-          <div className="Turn">
-            Your Turn!
-          </div>
-        : <div className="Turn">
-            Computer's Turn!
-          </div>
-      }
+      <div className="GameControl">
+        {roundCounter === false ?
+          shipImages.map((ship, index) => (
+            <img 
+              key={`shipImage${index}`}
+              src={ship[0]} 
+              alt="Ship" 
+              className={`Ship${ship[1]}`}
+            />
+          ))
+          : <div className="TurnDisplay">
+              {userTurn ? 
+                <div className="Turn">
+                  Your Turn!
+                </div>
+              : <div className="Turn">
+                  Computer's Turn!
+                </div>
+        }
+            </div>
+        }
+      </div>
       <Boards 
         playerBoard={playerBoard}
         computerBoard={computerBoard}
