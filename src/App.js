@@ -18,7 +18,8 @@ function App() {
   const [ computerBoard, setComputerBoard ] = useState(GameBoardFactory());
 
   const [ userTurn, setUserTurn ] = useState(true);
-  let [ roundCounter, setRoundCounter ] = useState(false);
+  let [ roundCounter, setRoundCounter ] = useState(0);
+  // let [ roundCounter, setRoundCounter ] = useState(false);
 
   // For implementing drag and drop
   const [ dragItem, setDragItem ] = useState();
