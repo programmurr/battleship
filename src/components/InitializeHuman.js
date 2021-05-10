@@ -15,30 +15,30 @@ function InitializeHuman() {
   const [ selectedShip, setSelectedShip ] = useState();
   const [ dragItem, setDragItem ] = useState();
   const [ humanShips, setHumanShips ] = useState([
+    ShipFactory(1),
+    ShipFactory(1),
+    ShipFactory(1),
+    ShipFactory(1),
+    ShipFactory(2),
+    ShipFactory(2),
+    ShipFactory(2),
+    ShipFactory(3),
+    ShipFactory(3),
     ShipFactory(4),
-    ShipFactory(3),
-    ShipFactory(3),
-    ShipFactory(2),
-    ShipFactory(2),
-    ShipFactory(2),
-    ShipFactory(1),
-    ShipFactory(1),
-    ShipFactory(1),
-    ShipFactory(1),
   ]);
 
-  const shipImages = [
-    [Ship4, 4],
+  const [ shipImages, setShipImages ] = useState([
+    [Ship1, 1],
+    [Ship1, 1],
+    [Ship1, 1],
+    [Ship1, 1],
+    [Ship2, 2],
+    [Ship2, 2],
+    [Ship2, 2],
     [Ship3, 3],
     [Ship3, 3],
-    [Ship2, 2],
-    [Ship2, 2],
-    [Ship2, 2],
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship1, 1]
-  ];
+    [Ship4, 4]
+  ]);
 
   const handleClick = (e) => {
     if (e.target === selectedShip) {
@@ -62,36 +62,54 @@ function InitializeHuman() {
     }
   }
 
-  // Need to fix spacing around ships so they don't overlap when rotating
   const handleShipRotate = () => {
-    const index = parseInt(selectedShip.id);
-    const oldShip = humanShips[index];
-    const newLength = oldShip.hull.length;
-    let newOrientation = "";
-    if (oldShip.orientation === 'H') {
-      newOrientation = 'V';
-      updateRotationUI('V');
-    } else {
-      newOrientation = 'H';
-      updateRotationUI('H');
+    try {
+      const index = parseInt(selectedShip.id);
+      const oldShip = humanShips[index];
+      const newLength = oldShip.hull.length;
+      let newOrientation = "";
+
+      if (newLength === 1) { return };
+      if (oldShip.orientation === 'H') {
+        newOrientation = 'V';
+        updateRotationUI('V');
+      } else {
+        newOrientation = 'H';
+        updateRotationUI('H');
+      }
+      const newShip = ShipFactory(newLength, newOrientation);
+      const newHumanShips = [...humanShips];
+      newHumanShips.splice(index, 1, newShip);
+      setHumanShips(newHumanShips);
+    } catch (e) {
+      // Probably because a ship has not been selected
+      console.error(e);
     }
-    const newShip = ShipFactory(newLength, newOrientation);
-    const newHumanShips = [...humanShips];
-    newHumanShips.splice(index, 1, newShip);
-    setHumanShips(newHumanShips);
   }
 
-  const handleDragStart = (index) => {
-    setDragItem(index);
+  const handleDragStart = (shipIndex) => {
+    setDragItem(shipIndex);
   }
 
-  const handleDragEnter = (e, index) => {
+  const handleDragEnter = (e, row, cell) => {
     const newBoard = Object.assign({}, humanBoard);
-    const shipPlacement = newBoard.board[dragItem];
-    newBoard.board.splice(dragItem, 1);
-    newBoard.board.splice(index, 0, shipPlacement);
-    setDragItem(index);
+    const newHumanShips = [...humanShips];
+    const newShipImages = [...shipImages];
+    const ship = newHumanShips[dragItem];
+    // const shipPlacement = newBoard.board[row][cell];
+    newHumanShips.splice(dragItem, 1);
+    newShipImages.splice(dragItem, 1);
+    newBoard.board[row].splice(cell, 0, ship);
+    console.log(newBoard.board)
+    // setDragItem(index);
+    setHumanShips(newHumanShips);
+    setShipImages(newShipImages);
     setHumanBoard(newBoard);
+  }
+
+  const handlePlayClick = () => {
+    // Handle if not all ships placed
+    // Take player to game page
   }
 
   return (
@@ -108,8 +126,6 @@ function InitializeHuman() {
               className={`Ship${ship[1]}`}
               onClick={handleClick}
               onDragStart={() => handleDragStart(index)}
-              onDragEnter={(e) => handleDragEnter(e, index)}
-              onDragOver={(e) => e.preventDefault()}
             />
           ))}
         </div>
@@ -120,15 +136,31 @@ function InitializeHuman() {
             alt="Rotate Ship Button"
             onClick={handleShipRotate}
           />
+          <button onClick={handlePlayClick}>Start Game!</button>
+        </div>
+        <div className="StartPlaySection">
         </div>
       </div>
       <div className="HumanBoard">
         {humanBoard.board.map((row, rowIndex) => (
-          row.map((cell, cellIndex) => (
-            <div key={`Cell${rowIndex}${cellIndex}`} className="PlayerCell">
-              {cell}
-            </div>
-          ))
+          row.map((cell, cellIndex) => {
+            if (typeof cell === 'string') {
+              return (
+                <div 
+                  key={`Cell${rowIndex}${cellIndex}`} 
+                  className="PlayerCell"
+                  onDragEnter={(e) => handleDragEnter(e, rowIndex, cellIndex)}
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  {cell}
+              </div>
+              )
+            } else {
+              return (
+                <div>S</div>
+              )
+            }
+          })
         ))}
       </div>
     </div>

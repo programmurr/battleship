@@ -8,6 +8,8 @@ import Game from './components/Game';
 import InitializeHuman from './components/InitializeHuman';
 
 
+// Home page will be a welcome message with instructions saying to drag ship to board then
+// press play
 function App() {
   return (
     <Router>
@@ -16,6 +18,9 @@ function App() {
           <h1>Battleship</h1>
         </div>
         <Switch>
+          {/* <Route exact path="/">
+            <Home />
+          </Route> */}
           <Route exact path="/">
             <InitializeHuman />
           </Route>
