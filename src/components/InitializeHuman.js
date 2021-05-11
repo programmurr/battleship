@@ -91,17 +91,16 @@ function InitializeHuman() {
     setDragItem(shipIndex);
   }
 
-  const handleDragEnter = (e, row, cell) => {
+  const handleDrop = (e, row, cell) => {
     const newBoard = Object.assign({}, humanBoard);
     const newHumanShips = [...humanShips];
     const newShipImages = [...shipImages];
-    const ship = newHumanShips[dragItem];
-    // const shipPlacement = newBoard.board[row][cell];
+    const shipObject = newHumanShips[dragItem];
+    const shipImage = newShipImages[dragItem];
     newHumanShips.splice(dragItem, 1);
     newShipImages.splice(dragItem, 1);
-    newBoard.board[row].splice(cell, 0, ship);
+    newBoard.board[row].splice(cell, 1, [shipObject, shipImage]);
     console.log(newBoard.board)
-    // setDragItem(index);
     setHumanShips(newHumanShips);
     setShipImages(newShipImages);
     setHumanBoard(newBoard);
@@ -149,15 +148,22 @@ function InitializeHuman() {
                 <div 
                   key={`Cell${rowIndex}${cellIndex}`} 
                   className="PlayerCell"
-                  onDragEnter={(e) => handleDragEnter(e, rowIndex, cellIndex)}
                   onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => handleDrop(e, rowIndex, cellIndex)}
                 >
                   {cell}
               </div>
               )
+            } else if (false) {
+              // do summit
             } else {
               return (
-                <div>S</div>
+                <img
+                  key={`ShipImage${cell[1][1]}`} 
+                  src={cell[1][0]}
+                  alt={`Ship of Length ${cell[0].hull.length}`}
+                  className={`BoardShip${cell[1][1]}`}
+                />
               )
             }
           })

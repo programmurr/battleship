@@ -154,6 +154,14 @@ body {
   font-size: 1.5vw;
 }
 
+.BoardShip1,
+.BoardShip2,
+.BoardShip3,
+.BoardShip4 {
+  border-right: 2px solid var(--light-water);
+  border-bottom: 2px solid var(--light-water);
+}
+
 /* .GameControl {
   width: 90vw;
   background-color: var(--water);
