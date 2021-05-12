@@ -100,7 +100,7 @@ function InitializeHuman() {
     newHumanShips.splice(dragItem, 1);
     newShipImages.splice(dragItem, 1);
     newBoard.board[row].splice(cell, 1, [shipObject, shipImage]);
-    console.log(newBoard.board)
+    console.log(newBoard.board[1][0])
     setHumanShips(newHumanShips);
     setShipImages(newShipImages);
     setHumanBoard(newBoard);
@@ -155,7 +155,8 @@ function InitializeHuman() {
               </div>
               )
             } else if (false) {
-              // do summit
+              // ships can calculate their coordinates
+              // board iteration reads that for display purposes
             } else {
               return (
                 <img

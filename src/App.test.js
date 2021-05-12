@@ -54,6 +54,64 @@ describe('ShipFactory', () => {
     const newShip = ShipFactory(4, 'H');
     expect(newShip.orientation).toBe('H');
   });
+
+  it('can calculate its horizontal placement when placed on the board (length 1)', () => {
+    const newShip = ShipFactory(1, 'H');
+    newShip.placement('A1');
+    expect(newShip.hull).toEqual(['A1']);
+  })
+
+  it('can calculate its horizontal placement when placed on the board (length 2)', () => {
+    const newShip = ShipFactory(2, 'H');
+    newShip.placement('C1');
+    expect(newShip.hull).toEqual(['C1', 'D1']);
+  })
+
+  it('can calculate its horizontal placement when placed on the board (length 3)', () => {
+    const newShip = ShipFactory(3, 'H');
+    newShip.placement('E7');
+    expect(newShip.hull).toEqual(['E7', 'F7', 'G7']);
+  })
+
+  it('can calculate its horizontal placement when placed on the board (length 4)', () => {
+    const newShip = ShipFactory(4, 'H');
+    newShip.placement('A10');
+    expect(newShip.hull).toEqual(['A10', 'B10', 'C10', 'D10']);
+  })
+
+  it('throws an error if the player tries to place the ship beyond the range of the board', () => {
+    const newShip = ShipFactory(4, 'H');
+    expect(() => newShip.placement('H7')).toThrow('Ship exceeds the range of the board');
+  })
+
+  it('can calculate its vertical placement when placed on the board (length 1)', () => {
+    const newShip = ShipFactory(1, 'H');
+    newShip.placement('A1');
+    expect(newShip.hull).toEqual(['A1']);
+  })
+
+  it('can calculate its vertical placement when placed on the board (length 2)', () => {
+    const newShip = ShipFactory(2, 'V');
+    newShip.placement('I3');
+    expect(newShip.hull).toEqual(['I3', 'I4']);
+  })
+
+  it('can calculate its vertical placement when placed on the board (length 3)', () => {
+    const newShip = ShipFactory(3, 'V');
+    newShip.placement('C5');
+    expect(newShip.hull).toEqual(['C5', 'C6', 'C7']);
+  })
+
+  it('can calculate its vertical placement when placed on the board (length 4)', () => {
+    const newShip = ShipFactory(4, 'V');
+    newShip.placement('F7');
+    expect(newShip.hull).toEqual(['F7', 'F8', 'F9', 'F10']);
+  })
+
+  it('throws error if the player tries to place a vertical ship beyond the range of the board', () => {
+    const newShip = ShipFactory(4, 'V');
+    expect(() => newShip.placement('F10')).toThrow('Ship exceeds the range of the board');
+  })
 })
 
 describe('GameBoardFactory', () => {

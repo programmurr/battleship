@@ -1,3 +1,5 @@
+import GameUtils from '../utils/GameUtils';
+
 var lodash = require('lodash');
 
 function PlayerFactory() {
@@ -19,13 +21,7 @@ function PlayerFactory() {
       const newAttack = nextAttacks.splice(nextAttacks.length - 1, 1);
       return newAttack;
     } else {
-      const height = lodash.range(1, 11);
-      const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
-      const mockBoard = height.map((num) => {
-        return length.map((char) => {
-          return `${char}${num}`;
-        });
-      });
+      const mockBoard = GameUtils().mockBoard;
       while (true) {
         const x = Math.floor(Math.random() * 10);
         const y = Math.floor(Math.random() * 10);
@@ -36,16 +32,6 @@ function PlayerFactory() {
           attacks.push(attackCoord);
           return attacks;
         }
-      }
-    }
-  }
-
-  const locatedCoordIndexes = (coord, board) => {
-    for (let i = 0; i < board.length; i++) {
-      const row = board[i];
-      if (row.includes(coord)) {
-        const nestedIndex = row.findIndex((pos) => pos === coord);
-        return [i, nestedIndex];
       }
     }
   }
@@ -78,7 +64,7 @@ function PlayerFactory() {
   }
 
   const calculateNextAttackRange = (position, board) => {
-    const xAndYIndexes = locatedCoordIndexes(position, board);
+    const xAndYIndexes = GameUtils().coordIndexes(position, board);
     const coords = getCoords(xAndYIndexes, board);
     const finalCoords = cleanCoords(coords, position);
     finalCoords.forEach((coord) => {
