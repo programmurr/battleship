@@ -146,20 +146,30 @@ body {
 }
 
 .PlayerCell {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
   align-items: center;
   border-right: 2px solid var(--light-water);
   border-bottom: 2px solid var(--light-water);
   font-size: 1.5vw;
 }
 
-.BoardShip1,
-.BoardShip2,
-.BoardShip3,
-.BoardShip4 {
-  border-right: 2px solid var(--light-water);
-  border-bottom: 2px solid var(--light-water);
+.CellCoord {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.BoardShip1H {
+  z-index: 0;
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.BoardShip1V,
+.BoardShip2V,
+.BoardShip3V,
+.BoardShip4V {
+  transform: rotate(90deg);
 }
 
 /* .GameControl {

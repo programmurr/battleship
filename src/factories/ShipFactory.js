@@ -1,10 +1,17 @@
 import GameUtils from '../utils/GameUtils';
+import Ship4 from '../img/ship4.png';
+import Ship3 from '../img/ship3.png';
+import Ship2 from '../img/ship2.png';
+import Ship1 from '../img/ship1.png';
+
 
 function ShipFactory(length, direction = 'H') {
-
+  const shipImages = [Ship1, Ship2, Ship3, Ship4];
   const orientation = direction;
 
   let hull = Array.from({ length: length }).map(() => "");
+
+  const src = shipImages[hull.length - 1];
 
   const placement = (coord) => {
     const board = GameUtils().mockBoard;
@@ -43,7 +50,7 @@ function ShipFactory(length, direction = 'H') {
     return hull.every((compartment) => compartment === "X");
   }
 
-  return { hull, hit, isSunk, orientation, placement };
+  return { hull, hit, isSunk, orientation, placement, src };
 }
 
 export default ShipFactory;

@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import GameBoardFactory from '../factories/GameBoardFactory';
 import ShipFactory from '../factories/ShipFactory';
 import PlayerFactory from '../factories/PlayerFactory';
-import Ship4 from '../img/ship4.png';
-import Ship3 from '../img/ship3.png';
-import Ship2 from '../img/ship2.png';
-import Ship1 from '../img/ship1.png';
 import RotateButton from '../img/rotate.png';
 
 
@@ -25,19 +21,6 @@ function InitializeHuman() {
     ShipFactory(3),
     ShipFactory(3),
     ShipFactory(4),
-  ]);
-
-  const [ shipImages, setShipImages ] = useState([
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship2, 2],
-    [Ship2, 2],
-    [Ship2, 2],
-    [Ship3, 3],
-    [Ship3, 3],
-    [Ship4, 4]
   ]);
 
   const handleClick = (e) => {
@@ -91,19 +74,21 @@ function InitializeHuman() {
     setDragItem(shipIndex);
   }
 
-  const handleDrop = (e, row, cell) => {
+  const handleDrop = (e, row, cell, coord) => {
     const newBoard = Object.assign({}, humanBoard);
     const newHumanShips = [...humanShips];
-    const newShipImages = [...shipImages];
-    const shipObject = newHumanShips[dragItem];
-    const shipImage = newShipImages[dragItem];
-    newHumanShips.splice(dragItem, 1);
-    newShipImages.splice(dragItem, 1);
-    newBoard.board[row].splice(cell, 1, [shipObject, shipImage]);
-    console.log(newBoard.board[1][0])
-    setHumanShips(newHumanShips);
-    setShipImages(newShipImages);
-    setHumanBoard(newBoard);
+    const ship = newHumanShips[dragItem];
+    try {
+      ship.placement(coord);
+      newHumanShips.splice(dragItem, 1);
+      newBoard.board[row].splice(cell, 1, ship);
+      console.log(newBoard.board)
+      setHumanShips(newHumanShips);
+      setHumanBoard(newBoard);
+    } catch (err) {
+      // Probably because they placed the ship out of bounds
+      console.error(err.message)
+    }
   }
 
   const handlePlayClick = () => {
@@ -115,14 +100,14 @@ function InitializeHuman() {
     <div className="InitializeHuman">
       <div className="ShipSelection">
         <div className="ShipSelector">
-          {shipImages.map((ship, index) => (
+          {humanShips.map((ship, index) => (
             <img 
               draggable
               key={`ShipImage${index}`}
               id={`${index}`}
-              src={ship[0]}
-              alt="Ship"
-              className={`Ship${ship[1]}`}
+              src={ship.src}
+              alt={`Ship of length ${ship.hull.length}`}
+              className={`Ship${ship.hull.length}`}
               onClick={handleClick}
               onDragStart={() => handleDragStart(index)}
             />
@@ -149,22 +134,26 @@ function InitializeHuman() {
                   key={`Cell${rowIndex}${cellIndex}`} 
                   className="PlayerCell"
                   onDragOver={(e) => e.preventDefault()}
-                  onDrop={(e) => handleDrop(e, rowIndex, cellIndex)}
+                  onDrop={(e) => handleDrop(e, rowIndex, cellIndex, cell)}
                 >
-                  {cell}
-              </div>
+                  <span className="CellCoord">{cell}</span>
+                </div>
               )
-            } else if (false) {
-              // ships can calculate their coordinates
-              // board iteration reads that for display purposes
             } else {
               return (
-                <img
-                  key={`ShipImage${cell[1][1]}`} 
-                  src={cell[1][0]}
-                  alt={`Ship of Length ${cell[0].hull.length}`}
-                  className={`BoardShip${cell[1][1]}`}
-                />
+                <div 
+                  key={`Cell${rowIndex}${cellIndex}`} 
+                  className="PlayerCell"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => handleDrop(e, rowIndex, cellIndex, cell)}
+                ><span className="CellCoord">{cell.hull[0]}</span>
+                  <img
+                    key={`ShipImage${cell.hull.length}`} 
+                    src={cell.src}
+                    alt={`Ship of Length ${cell.hull.length}`}
+                    className={`BoardShip${cell.hull.length}${cell.orientation}`}
+                  />
+                </div>
               )
             }
           })
