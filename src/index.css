@@ -145,7 +145,9 @@ body {
   border-left: 2px solid var(--light-water);
 }
 
-.PlayerCell {
+.PlayerCell,
+.PlayerCellOccupiedH,
+.PlayerCellOccupiedV {
   display: grid;
   justify-items: center;
   align-items: center;
@@ -154,22 +156,47 @@ body {
   font-size: 1.5vw;
 }
 
-.CellCoord {
+.PlayerCellOccupiedV {
+  transform: rotate(90deg);
+  border-top: 2px solid var(--light-water);
+  border-bottom: 0;
+}
+
+.CellCoordOccupiedH,
+.CellCoordOccupiedV {
+  margin-left: 1vw;
+  justify-self: start;
+  align-self: center;
   grid-column: 1/2;
   grid-row: 1/2;
 }
 
-.BoardShip1H {
+.CellCoordOccupiedV {
+  transform: rotate(270deg);
+}
+
+.BoardShip1,
+.BoardShip2,
+.BoardShip3,
+.BoardShip4 {
   z-index: 0;
   grid-column: 1/2;
   grid-row: 1/2;
 }
 
-.BoardShip1V,
-.BoardShip2V,
-.BoardShip3V,
-.BoardShip4V {
-  transform: rotate(90deg);
+.BoardShip2 {
+  height: 3.75vh;
+  width: 7.75vw;
+}
+
+.BoardShip3 {
+  height: 3.75vh;
+  width: 11.75vw;
+}
+
+.BoardShip4 {
+  height: 3.5vh;
+  width: 15.75vw;
 }
 
 /* .GameControl {

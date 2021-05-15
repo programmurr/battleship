@@ -143,15 +143,15 @@ function InitializeHuman() {
               return (
                 <div 
                   key={`Cell${rowIndex}${cellIndex}`} 
-                  className="PlayerCell"
+                  className={`PlayerCellOccupied${cell.orientation}`}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => handleDrop(e, rowIndex, cellIndex, cell)}
-                ><span className="CellCoord">{cell.hull[0]}</span>
+                ><span className={`CellCoordOccupied${cell.orientation}`}>{cell.hull[0]}</span>
                   <img
                     key={`ShipImage${cell.hull.length}`} 
                     src={cell.src}
                     alt={`Ship of Length ${cell.hull.length}`}
-                    className={`BoardShip${cell.hull.length}${cell.orientation}`}
+                    className={`BoardShip${cell.hull.length}`}
                   />
                 </div>
               )
