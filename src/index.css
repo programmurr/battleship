@@ -55,29 +55,25 @@ body {
   gap: 10px 0;
 }
 
-.ShipSelection {
+.ShipPlacement {
   grid-column: 2/3;
   grid-row: 1/2;
   background-color: var(--water);
   border: 5px outset var(--light-water);
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   height: 25vh;
 }
 
-.ShipSelector {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+.ShipPlacement > img:hover {
+  cursor: pointer;
 }
 
-.ShipSelector > img {
-  margin: 5px 5px 5px 5px;
+.ShipDragHome {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .Ship4,
@@ -85,13 +81,6 @@ body {
 .Ship2,
 .Ship1 {
   border: 1px solid var(--water);
-}
-
-.Ship4:hover,
-.Ship3:hover,
-.Ship2:hover,
-.Ship1:hover {
-  border: 1px solid var(--hover-yellow);
 }
 
 .Ship4 {
