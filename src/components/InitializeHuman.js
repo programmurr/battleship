@@ -28,22 +28,33 @@ function InitializeHuman() {
     setDisplayShip(ship);
   }, [humanShips])
 
-  const handleShipRotate = () => {
-    // handle it
+  const handleShipRotate = (ship) => {
+    if (ship.hull.length === 1) {
+      alert('No point in doing that');
+      return ;
+    }
+    const shipCopy = Object.assign({}, ship);
+    if (shipCopy.orientation === 'H') {
+      shipCopy.orientation = 'V'
+    } else {
+      shipCopy.orientation = 'H'
+    }
+    setDisplayShip(shipCopy);
   }
 
-  const handleDragStart = (shipIndex) => {
-    setDragItem(shipIndex);
+  const handleDragStart = (ship) => {
+    setDragItem(ship);
   }
 
+  // Ships of length 2 cannot be placed vertically in row J
+  // Ships of length 3 and 4 are exceeding the bottom when placed vertically
   const handleDrop = (row, cell, coord) => {
     const newBoard = Object.assign({}, humanBoard);
     const newHumanShips = [...humanShips];
-    const ship = displayShip;
     try {
-      ship.placement(coord);
+      displayShip.placement(coord);
       newHumanShips.splice(dragItem, 1);
-      newBoard.board[row].splice(cell, 1, ship);
+      newBoard.board[row].splice(cell, 1, displayShip);
       setHumanShips(newHumanShips);
       setHumanBoard(newBoard);
     } catch (err) {
@@ -66,14 +77,14 @@ function InitializeHuman() {
                 draggable
                 src={displayShip.src}
                 alt={`Ship of length ${displayShip.hull.length}`}
-                className={`Ship${displayShip.hull.length}`}
+                className={`Ship${displayShip.hull.length}${displayShip.orientation}`}
                 onDragStart={() => handleDragStart(displayShip)}
               />
               <img 
                 className="RotateButton"
                 src={RotateButton}
                 alt="Rotate Ship Button"
-                onClick={handleShipRotate}
+                onClick={() => handleShipRotate(displayShip)}
               />
             </div>
           : <div className="ShipDragHome">

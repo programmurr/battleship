@@ -97,11 +97,24 @@ body {
   max-width: 114px;
 }
 
-.Ship2 {
+.Ship2H,
+.Ship2V {
   height: 4vh;
   width: 8vw;
   max-height: 25px;
   max-width: 76px;
+}
+
+.Ship2H,
+.Ship3H,
+.Ship4H {
+  transform: rotate(360deg);
+}
+
+.Ship2V,
+.Ship3V,
+.Ship4V {
+  transform: rotate(90deg);
 }
 
 .Ship1 {
