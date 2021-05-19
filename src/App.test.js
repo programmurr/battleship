@@ -57,60 +57,60 @@ describe('ShipFactory', () => {
 
   it('can calculate its horizontal placement when placed on the board (length 1)', () => {
     const newShip = ShipFactory(1, 'H');
-    newShip.placement('A1');
+    newShip.placement('A1', newShip.orientation);
     expect(newShip.hull).toEqual(['A1']);
   })
 
   it('can calculate its horizontal placement when placed on the board (length 2)', () => {
     const newShip = ShipFactory(2, 'H');
-    newShip.placement('C1');
+    newShip.placement('C1', newShip.orientation);
     expect(newShip.hull).toEqual(['C1', 'D1']);
   })
 
   it('can calculate its horizontal placement when placed on the board (length 3)', () => {
     const newShip = ShipFactory(3, 'H');
-    newShip.placement('E7');
+    newShip.placement('E7', newShip.orientation);
     expect(newShip.hull).toEqual(['E7', 'F7', 'G7']);
   })
 
   it('can calculate its horizontal placement when placed on the board (length 4)', () => {
     const newShip = ShipFactory(4, 'H');
-    newShip.placement('A10');
+    newShip.placement('A10', newShip.orientation);
     expect(newShip.hull).toEqual(['A10', 'B10', 'C10', 'D10']);
   })
 
   it('throws an error if the player tries to place the ship beyond the range of the board', () => {
     const newShip = ShipFactory(4, 'H');
-    expect(() => newShip.placement('H7')).toThrow('Ship exceeds the range of the board');
+    expect(() => newShip.placement('H7', newShip.orientation)).toThrow('Ship exceeds the range of the board');
   })
 
   it('can calculate its vertical placement when placed on the board (length 1)', () => {
     const newShip = ShipFactory(1, 'H');
-    newShip.placement('A1');
+    newShip.placement('A1', newShip.orientation);
     expect(newShip.hull).toEqual(['A1']);
   })
 
   it('can calculate its vertical placement when placed on the board (length 2)', () => {
     const newShip = ShipFactory(2, 'V');
-    newShip.placement('I3');
+    newShip.placement('I3', newShip.orientation);
     expect(newShip.hull).toEqual(['I3', 'I4']);
   })
 
   it('can calculate its vertical placement when placed on the board (length 3)', () => {
     const newShip = ShipFactory(3, 'V');
-    newShip.placement('C5');
+    newShip.placement('C5', newShip.orientation);
     expect(newShip.hull).toEqual(['C5', 'C6', 'C7']);
   })
 
   it('can calculate its vertical placement when placed on the board (length 4)', () => {
     const newShip = ShipFactory(4, 'V');
-    newShip.placement('F7');
+    newShip.placement('F7', newShip.orientation);
     expect(newShip.hull).toEqual(['F7', 'F8', 'F9', 'F10']);
   })
 
   it('throws error if the player tries to place a vertical ship beyond the range of the board', () => {
     const newShip = ShipFactory(4, 'V');
-    expect(() => newShip.placement('F10')).toThrow('Ship exceeds the range of the board');
+    expect(() => newShip.placement('F10', newShip.orientation)).toThrow('Ship exceeds the range of the board');
   })
 })
 
@@ -283,6 +283,64 @@ describe('GameBoardFactory', () => {
     newBoard.receiveAttack('H9');
     newBoard.receiveAttack('A2');
     expect(newBoard.successfulAttacks).toEqual(['A1', 'A2']);
+  })
+
+  it('#placeShip throws an error if vertical ship placements overlap', () => {
+    const mockShip = (mockLength, direction) => {
+      const length = mockLength;
+      const orientation = direction;
+      return { length, orientation }
+    }
+
+    const mockShip1 = mockShip(3, 'V');
+    const mockShip2 = mockShip(3, 'V');
+    const newBoard = GameBoardFactory();
+    newBoard.placeShip(['A2', 'A3', 'A4'], mockShip1);
+    expect(() => newBoard.placeShip(['A1', 'A2', 'A3'], mockShip2)).toThrow('Ship placement overlaps');
+  })
+
+  it('#placeShip throws an error if horizontal ship placements overlap', () => {
+    const mockShip = (mockLength, direction) => {
+      const length = mockLength;
+      const orientation = direction;
+      return { length, orientation }
+    }
+
+    const mockShip1 = mockShip(2, 'H');
+    const mockShip2 = mockShip(2, 'H');
+    const newBoard = GameBoardFactory();
+    newBoard.placeShip(['B2', 'C2'], mockShip1);
+    expect(() => newBoard.placeShip(['C2', 'D2'], mockShip2)).toThrow('Ship placement overlaps');
+  })
+
+  it('#placeShip throws an error if mixed ship placements overlap', () => {
+    const mockShip = (mockLength, direction) => {
+      const length = mockLength;
+      const orientation = direction;
+      return { length, orientation }
+    }
+
+    const mockShip1 = mockShip(3, 'H');
+    const mockShip2 = mockShip(4, 'V');
+    const newBoard = GameBoardFactory();
+    newBoard.placeShip(['E8', 'F8', 'G8'], mockShip1);
+    expect(() => newBoard.placeShip(['F7', 'F8', 'F9', 'F10'], mockShip2)).toThrow('Ship placement overlaps');
+  })
+
+  it('#placeShip does not throw an error if ships are placed correctly', () => {
+    const mockShip = (mockLength, direction) => {
+      const length = mockLength;
+      const orientation = direction;
+      return { length, orientation }
+    }
+
+    const mockShip1 = mockShip(2, 'H');
+    const mockShip2 = mockShip(3, 'H');
+    const mockShip3 = mockShip(4, 'V');
+    const newBoard = GameBoardFactory();
+    newBoard.placeShip(['D3', 'E3'], mockShip1);
+    newBoard.placeShip(['A1', 'B1', 'C1'], mockShip2);
+    expect(() => newBoard.placeShip(['F7', 'F8', 'F9', 'F10'], mockShip3)).not.toThrow();
   })
 })
 

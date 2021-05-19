@@ -46,21 +46,31 @@ function InitializeHuman() {
     setDragItem(ship);
   }
 
-  // Ships of length 2 cannot be placed vertically in row J
-  // Ships of length 3 and 4 are exceeding the bottom when placed vertically
+  // Ships can overlap if placed left-to-right, which they shouldnt
+  // Ships overlap detection is throwing error, but still placing the ship
   const handleDrop = (row, cell, coord) => {
     const newBoard = Object.assign({}, humanBoard);
+    const newDisplayShip = Object.assign({}, displayShip);
     const newHumanShips = [...humanShips];
+
+    newDisplayShip.placement(coord, newDisplayShip.orientation);
+    newHumanShips.splice(dragItem, 1);
+    newBoard.board[row].splice(cell, 1, newDisplayShip);
     try {
-      displayShip.placement(coord);
-      newHumanShips.splice(dragItem, 1);
-      newBoard.board[row].splice(cell, 1, displayShip);
-      setHumanShips(newHumanShips);
-      setHumanBoard(newBoard);
+      newBoard.placeShip(newDisplayShip.hull, newDisplayShip)
     } catch (err) {
-      console.error(err.message)
+      setHumanBoard(humanBoard);
+      setHumanShips(humanShips);
+      setDisplayShip(displayShip);
+      console.error(err.message);
+      return;
     }
+    console.log(newBoard);
+    setHumanShips(newHumanShips);
+    setHumanBoard(newBoard);
   }
+  // playerBoard.placeShip(coord, ShipFactory(coord.length))
+  // setPlayerBoard(playerBoard)
 
   const handlePlayClick = () => {
     // Handle if not all ships placed

@@ -13,7 +13,7 @@ function ShipFactory(length, direction = 'H') {
 
   const src = shipImages[hull.length - 1];
 
-  const placement = (coord) => {
+  const placement = (coord, direction) => {
     const board = GameUtils().mockBoard;
     const indexes = GameUtils().coordIndexes(coord, board);
     let x = indexes[0];
@@ -21,7 +21,7 @@ function ShipFactory(length, direction = 'H') {
 
     hull[0] = coord;
 
-    if (hull.length > 1 && orientation === 'H') {
+    if (hull.length > 1 && direction === 'H') {
       for (let i = 1; i < hull.length; i++) {
         const nextCell = board[x][y + i];
         hull[i] = nextCell;
