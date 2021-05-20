@@ -46,31 +46,28 @@ function InitializeHuman() {
     setDragItem(ship);
   }
 
-  // Ships can overlap if placed left-to-right, which they shouldnt
-  // Ships overlap detection is throwing error, but still placing the ship
   const handleDrop = (row, cell, coord) => {
     const newBoard = Object.assign({}, humanBoard);
-    const newDisplayShip = Object.assign({}, displayShip);
+    let newDisplayShip = Object.assign({}, displayShip);
     const newHumanShips = [...humanShips];
-
-    newDisplayShip.placement(coord, newDisplayShip.orientation);
-    newHumanShips.splice(dragItem, 1);
-    newBoard.board[row].splice(cell, 1, newDisplayShip);
     try {
+      newDisplayShip.placement(coord, newDisplayShip.orientation);
+      newHumanShips.splice(dragItem, 1);
+      newBoard.board[row].splice(cell, 1, newDisplayShip);  
       newBoard.placeShip(newDisplayShip.hull, newDisplayShip)
     } catch (err) {
-      setHumanBoard(humanBoard);
+      newBoard.board[row][cell] = coord;
+      newDisplayShip = ShipFactory(displayShip.hull.length, displayShip.orientation)
+      newHumanShips.unshift(newDisplayShip);
+      setHumanBoard(newBoard);
       setHumanShips(humanShips);
-      setDisplayShip(displayShip);
-      console.error(err.message);
+      setDisplayShip(newDisplayShip);
+      alert(err.message);
       return;
     }
-    console.log(newBoard);
     setHumanShips(newHumanShips);
     setHumanBoard(newBoard);
   }
-  // playerBoard.placeShip(coord, ShipFactory(coord.length))
-  // setPlayerBoard(playerBoard)
 
   const handlePlayClick = () => {
     // Handle if not all ships placed
