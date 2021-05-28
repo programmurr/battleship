@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from 'react-router-dom';
+import GameBoardFactory from './factories/GameBoardFactory';
+import ShipFactory from './factories/ShipFactory';
 import Game from './components/Game';
-import InitializeHuman from './components/InitializeHuman';
+import InitializeHumanBoard from './components/InitializeHumanBoard';
 
 
-// Home page will be a welcome message with instructions saying to drag ship to board then
-// press play
 function App() {
+  const [ humanBoard, setHumanBoard ] = useState(GameBoardFactory());
+
+  const handleBoardUpdate = (newBoard) => {
+    setHumanBoard(newBoard);
+  }
+
   return (
     <Router>
       <div className="App">
@@ -18,15 +25,12 @@ function App() {
           <h1>Battleship</h1>
         </div>
         <Switch>
-          {/* <Route exact path="/">
-            <Home />
-          </Route> */}
           <Route exact path="/">
-            <InitializeHuman />
+            <InitializeHumanBoard humanBoard={humanBoard} updateBoard={handleBoardUpdate}/>
           </Route>
-          {/* <Route exact path="/game">
-            <Game />
-          </Route> */}
+          <Route exact path="/game">
+            <Game humanBoard={humanBoard}/>
+          </Route>
         </Switch>
       </div>
     </Router>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import GameBoardFactory from '../factories/GameBoardFactory';
 import ShipFactory from '../factories/ShipFactory';
-import PlayerFactory from '../factories/PlayerFactory';
 import RotateButton from '../img/rotate.png';
 
 
-function InitializeHuman() {
-  const [ human, setHuman ] = useState(PlayerFactory());
-  const [ humanBoard, setHumanBoard ] = useState(GameBoardFactory());
+function InitializeHumanBoard(props) {
+  // const [ humanBoard, setHumanBoard ] = useState(GameBoardFactory());
+  const { humanBoard } = props;
   const [ displayShip, setDisplayShip ] = useState(ShipFactory(1));
   const [ dragItem, setDragItem ] = useState();
   const [ humanShips, setHumanShips ] = useState([
@@ -59,21 +59,15 @@ function InitializeHuman() {
       newBoard.board[row][cell] = coord;
       newDisplayShip = ShipFactory(displayShip.hull.length, displayShip.orientation)
       newHumanShips.unshift(newDisplayShip);
-      setHumanBoard(newBoard);
+      props.updateBoard(newBoard);
       setHumanShips(humanShips);
       setDisplayShip(newDisplayShip);
       alert(err.message);
       return;
     }
     setHumanShips(newHumanShips);
-    setHumanBoard(newBoard);
+    props.updateBoard(newBoard);
   }
-
-  const handlePlayClick = () => {
-    // Handle if not all ships placed
-    // Take player to game page
-  }
-
   return (
     <div className="InitializeHuman">
       <div className="ShipPlacement">
@@ -95,7 +89,7 @@ function InitializeHuman() {
               />
             </div>
           : <div className="ShipDragHome">
-              <button onClick={handlePlayClick}>Start Game!</button>
+              <Link to="/game">Start Game!</Link>
             </div>
           }
       </div>
@@ -135,4 +129,4 @@ function InitializeHuman() {
   );
 }
 
-export default InitializeHuman;
+export default InitializeHumanBoard;
