@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
 import GameBoardFactory from './factories/GameBoardFactory';
-import ShipFactory from './factories/ShipFactory';
 import Game from './components/Game';
 import InitializeHumanBoard from './components/InitializeHumanBoard';
 
@@ -29,7 +27,7 @@ function App() {
             <InitializeHumanBoard humanBoard={humanBoard} updateBoard={handleBoardUpdate}/>
           </Route>
           <Route exact path="/game">
-            <Game humanBoard={humanBoard}/>
+            <Game humanBoard={humanBoard} updateBoard={handleBoardUpdate}/>
           </Route>
         </Switch>
       </div>

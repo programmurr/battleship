@@ -8,6 +8,7 @@ import Ship1 from '../img/ship1.png';
 function ShipFactory(length, direction = 'H') {
   const shipImages = [Ship1, Ship2, Ship3, Ship4];
   const orientation = direction;
+  let hitCounter = 0;
 
   let hull = Array.from({ length: length }).map(() => "");
 
@@ -42,15 +43,19 @@ function ShipFactory(length, direction = 'H') {
     }
   }
 
-  const hit = (index) => {
-    hull[index] = "X";
+  const hit = () => {
+    hitCounter++;
+    return hitCounter;
   }
 
   const isSunk = () => {
-    return hull.every((compartment) => compartment === "X");
+    if (hitCounter === hull.length) {
+      return true;
+    }
+    return false;
   }
 
-  return { hull, hit, isSunk, orientation, placement, src };
+  return { hull, hit, isSunk, orientation, placement, src, hitCounter };
 }
 
 export default ShipFactory;

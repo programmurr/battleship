@@ -13,9 +13,13 @@ export default function GameUtils() {
   const coordIndexes = (coord, board) => {
     for (let i = 0; i < board.length; i++) {
       const row = board[i];
-      if (row.includes(coord)) {
-        const nestedIndex = row.findIndex((pos) => pos === coord);
-        return [i, nestedIndex];
+      for (let j = 0; j < row.length; j++) {
+        const cell = row[j];
+        if (typeof cell === 'string' && cell === coord) {
+          return [i, j];
+        } else if (typeof cell !== 'string' && cell.hull[0] === coord) {
+          return [i, j];
+        }
       }
     }
   }

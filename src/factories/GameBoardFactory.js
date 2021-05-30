@@ -1,7 +1,5 @@
 import GameUtils from '../utils/GameUtils';
 
-var lodash = require('lodash')
-
 function GameBoardFactory() {
 
   let occupiedCoords = [];

@@ -10,33 +10,31 @@ describe('ShipFactory', () => {
     expect(newShip.hull).toEqual(["", "", "", ""]);
   });
   
-  it('takes a number and marks that position as hit', () => {
+  it('has a damage counter that can count a hit', () => {
     const newShip = ShipFactory(2);
-    newShip.hit(1)
-    expect(newShip.hull).toEqual(["", "X"]);
+    expect(newShip.hit()).toBe(1);
   });
   
   it('can cumulatively add damage', () => {
     const newShip = ShipFactory(4);
-    newShip.hit(0);
-    newShip.hit(3);
-    newShip.hit(2);
-    expect(newShip.hull).toEqual(["X", "", "X", "X"]);
+    newShip.hit();
+    newShip.hit();
+    expect(newShip.hit()).toBe(3);
   });
   
   it('returns true if all positions are hit', () => {
     const newShip = ShipFactory(4);
-    newShip.hit(0);
-    newShip.hit(1);
-    newShip.hit(2);
-    newShip.hit(3);
+    newShip.hit();
+    newShip.hit();
+    newShip.hit();
+    newShip.hit();
     expect(newShip.isSunk()).toBe(true);
   });
 
   it('returns false if not all positions are hit', () => {
     const newShip = ShipFactory(3);
-    newShip.hit(1);
-    newShip.hit(2);
+    newShip.hit();
+    newShip.hit();
     expect(newShip.isSunk()).toBe(false);
   });
 

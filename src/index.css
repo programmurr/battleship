@@ -201,7 +201,7 @@ body {
   width: 15.75vw;
 }
 
-/* .GameControl {
+.GameControl {
   width: 90vw;
   background-color: var(--water);
   margin-left: 5vw;
@@ -224,7 +224,7 @@ body {
   grid-template-rows: 20vw, 20vw;
 }
 
-.PlayerBoard {
+.HumanBoard {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
 }
@@ -235,7 +235,7 @@ body {
 }
 
 .ComputerBoard,
-.PlayerBoard {
+.HumanBoard {
   justify-self: center;
   width: 40vw;
   display: grid;
@@ -246,7 +246,7 @@ body {
   border-left: 2px solid var(--light-water);
 }
 
-.PlayerBoardHeader {
+.HumanBoardHeader {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
 }
@@ -256,7 +256,7 @@ body {
   grid-row: 1 / 2;
 }
 
-.PlayerBoardHeader,
+.HumanBoardHeader,
 .ComputerBoardHeader {
   font-size: 4vw;
   -webkit-text-stroke: 1px black;
@@ -268,8 +268,8 @@ body {
 
 .PlayerCell,
 .ComputerCell {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
   align-items: center;
   border-right: 2px solid var(--light-water);
   border-bottom: 2px solid var(--light-water);
@@ -286,4 +286,10 @@ body {
   width: 1.5vw;
 }
 
-*/
+.HitIcon {
+  z-index: 1;
+  grid-column: 1/2;
+  grid-row: 1/2;
+  justify-self: start;
+  margin-left: 1vw;
+}

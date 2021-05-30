@@ -44,9 +44,21 @@ function PlayerFactory() {
       const allRows = [board[x - 1], board[x], board[x + 1]];
       const rows = allRows.filter((row) => row !== undefined);
       rows.forEach((row) => {
-        coordsArray.push(row[y - 1]);
-        coordsArray.push(row[y]);
-        coordsArray.push(row[y + 1]);
+        if (typeof row[y - 1] === 'string') {
+          coordsArray.push(row[y - 1]);
+        } else {
+          coordsArray.push(row[y - 1].hull[0]);
+        }
+        if (typeof row[y] === 'string') {
+          coordsArray.push(row[y]);
+        } else {
+          coordsArray.push(row[y].hull[0]);
+        }
+        if (typeof row[y + 1] === 'string') {
+          coordsArray.push(row[y + 1]);
+        } else {
+          coordsArray.push(row[y + 1].hull[0]);
+        }
       })
     } catch (err) {
       console.log(err.message);

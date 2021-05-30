@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import GameBoardFactory from '../factories/GameBoardFactory';
 import ShipFactory from '../factories/ShipFactory';
 import RotateButton from '../img/rotate.png';
 
 
 function InitializeHumanBoard(props) {
-  // const [ humanBoard, setHumanBoard ] = useState(GameBoardFactory());
   const { humanBoard } = props;
   const [ displayShip, setDisplayShip ] = useState(ShipFactory(1));
   const [ dragItem, setDragItem ] = useState();

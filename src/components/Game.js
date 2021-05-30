@@ -3,64 +3,15 @@ import Boards from './Boards';
 import GameBoardFactory from '../factories/GameBoardFactory';
 import ShipFactory from '../factories/ShipFactory';
 import PlayerFactory from '../factories/PlayerFactory';
-import Ship4 from '../img/ship4.png';
-import Ship3 from '../img/ship3.png';
-import Ship2 from '../img/ship2.png';
-import Ship1 from '../img/ship1.png';
 
+function Game(props) {
+  const { humanBoard } = props;
 
-function Game() {
-
-  const [ player, setPlayer ] = useState(PlayerFactory()); // scrub
+  const [ player, setPlayer ] = useState(PlayerFactory());
   const [ computer, setComputer ] = useState(PlayerFactory());
-
-  const [ playerBoard, setPlayerBoard ] = useState(GameBoardFactory()); // scrub
   const [ computerBoard, setComputerBoard ] = useState(GameBoardFactory());
-
   const [ userTurn, setUserTurn ] = useState(true);
   let [ roundCounter, setRoundCounter ] = useState(0);
-  // let [ roundCounter, setRoundCounter ] = useState(false);
-
-  // For implementing drag and drop
-  const [ dragItem, setDragItem ] = useState();
-  const [ playerShips, setPlayerShips ] = useState([
-    ShipFactory(4),
-    ShipFactory(3),
-    ShipFactory(3),
-    ShipFactory(2),
-    ShipFactory(2),
-    ShipFactory(2),
-    ShipFactory(1),
-    ShipFactory(1),
-    ShipFactory(1),
-    ShipFactory(1),
-  ]);
-
-  const shipImages = [
-    [Ship4, 4],
-    [Ship3, 3],
-    [Ship3, 3],
-    [Ship2, 2],
-    [Ship2, 2],
-    [Ship2, 2],
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship1, 1],
-    [Ship1, 1]
-  ];
-
-  const playerCoords = [
-    ['A1', 'A2', 'A3', 'A4'],
-    ['I7', 'I8', 'I9'],
-    ['B8', 'C8', 'D8'],
-    ['C5', 'D5'],
-    ['J1', 'J2'],
-    ['A10', 'B10'],
-    ['H7'],
-    ['G3'],
-    ['E2'],
-    ['F7'],
-  ]
 
   const computerCoords = [
     ['J7', 'J8', 'J9', 'J10'],
@@ -75,39 +26,36 @@ function Game() {
     ['A10'],
   ]
 
-  const initializeBoards = (identifier, coords) => {
-    if (identifier === 'Player') {
-      // initialize drag and drop
-      coords.forEach((coord) => {
-        playerBoard.placeShip(coord, ShipFactory(coord.length))
-        setPlayerBoard(playerBoard)
-      })
-    } else {
-      // randomize the coords
-      // match an orientation to the coords
-      // placeShip with coord, Ship and orientation
-      coords.forEach((coord) => {
-        computerBoard.placeShip(coord, ShipFactory(coord.length))
-        setComputerBoard(computerBoard)
-      })
-    }
+  const initializeComputerBoard = (coords) => {
+    // randomize the coords
+    // match an orientation to the coords
+    // placeShip with coord, Ship and orientation
+    coords.forEach((coord) => {
+      computerBoard.placeShip(coord, ShipFactory(coord.length))
+      setComputerBoard(computerBoard)
+    })
   }
 
   const computerTurn = () => {
-    if (playerBoard.allShipsSunk()) {
-      alert('Game over! The Computers won!');
-      setUpNewGame();
-      return;
+    if (humanBoard.allShipsSunk()) {
+      if (window.confirm('Oh no! You lost! Would you like to redeem yourself and play again?')) {
+        window.location.reload();
+      }
+      // worry about the user clicking cancel when we get there
     }
     if (userTurn === false) {
       const newComputer = Object.assign({}, computer);
-      const newPlayerBoard = Object.assign({}, playerBoard);
+      const newHumanBoard = Object.assign({}, humanBoard);
       const computerAttacks = newComputer.computerAttack();
-      const currentAttack = computerAttacks[computerAttacks.length - 1];
-      if (newPlayerBoard.receiveAttack(currentAttack) !== undefined) {
-        computer.calculateNextAttackRange(currentAttack, newPlayerBoard.board);
+      let currentAttack = computerAttacks[computerAttacks.length - 1];
+      if (typeof currentAttack !== 'string') {
+        currentAttack = currentAttack.hull[0]
       }
-      setPlayerBoard(newPlayerBoard);
+      if (newHumanBoard.receiveAttack(currentAttack) !== undefined) {
+        computer.calculateNextAttackRange(currentAttack, newHumanBoard.board);
+        console.log(newHumanBoard);
+      }
+      props.updateBoard(newHumanBoard);
       setComputer(newComputer);
       setUserTurn(true);
       setRoundCounter(roundCounter += 1);
@@ -116,28 +64,19 @@ function Game() {
 
   useEffect(() => {
     if (roundCounter === 0) {
-      initializeBoards('Player', playerCoords);
-      initializeBoards('Computer', computerCoords);
+      initializeComputerBoard(computerCoords);
     }
   })
 
   useEffect(() => {
     if (computerBoard.allShipsSunk()) {
-      alert('Game over! Humans won!');
-      setUpNewGame();
-      return;
+      if (window.confirm('Congratulations! You won! Would you like to play again?')) {
+        window.location.reload();
+      }
+      // worry about the user clicking cancel when we get there
     }
     setTimeout(() => computerTurn(), 0);
   }, [userTurn])
-
-  const setUpNewGame = () => {
-    setUserTurn(true);
-    setPlayer(PlayerFactory());
-    setComputer(PlayerFactory());
-    setPlayerBoard(GameBoardFactory());
-    setComputerBoard(GameBoardFactory());
-    setRoundCounter(0);
-  }
 
   const handlePlayerTurn = (coord) => {
     if (userTurn) {
@@ -156,36 +95,22 @@ function Game() {
     }
   }
 
-
-
-
-
   return (
     <div className="Game">
       <div className="GameControl">
-        {roundCounter === false ?
-          shipImages.map((ship, index) => (
-            <img 
-              key={`shipImage${index}`}
-              src={ship[0]} 
-              alt="Ship" 
-              className={`Ship${ship[1]}`}
-            />
-          ))
-          : <div className="TurnDisplay">
-              {userTurn ? 
-                <div className="Turn">
-                  Your Turn!
-                </div>
-              : <div className="Turn">
-                  Computer's Turn!
-                </div>
-        }
-            </div>
-        }
+          <div className="TurnDisplay">
+            {userTurn ? 
+              <div className="Turn">
+                Your Turn!
+              </div>
+            : <div className="Turn">
+                Computer's Turn!
+              </div>
+            }
+          </div>
       </div>
       <Boards 
-        playerBoard={playerBoard}
+        humanBoard={humanBoard}
         computerBoard={computerBoard}
         handlePlayerTurn={handlePlayerTurn}
       />
