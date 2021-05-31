@@ -230,6 +230,13 @@ body {
   border-radius: 10px;
 }
 
+.TurnDisplay {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .Turn {
   font-family: "militaryFont";
   color: var(--header-yellow);
@@ -251,6 +258,7 @@ body {
 .ComputerBoard {
   grid-column: 2 / 3;
   grid-row: 2 / 3;
+  margin-top: 1vh;
 }
 
 .ComputerBoard,
@@ -267,9 +275,11 @@ body {
 .HumanBoardHeader {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
+  justify-self: center;
 }
 
 .ComputerBoardHeader {
+  justify-self: center;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
 }
@@ -292,6 +302,7 @@ body {
   border-right: 2px solid var(--light-water);
   border-bottom: 2px solid var(--light-water);
   font-size: 1.5vw;
+  font-size: 1rem;
 }
 
 .ComputerCell:hover {
@@ -310,4 +321,14 @@ body {
   grid-row: 1/2;
   justify-self: start;
   margin-left: 1vw;
+}
+
+.VictoryDeclaration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.VictoryDeclaration > a > button {
+  font-size: 1rem;
 }

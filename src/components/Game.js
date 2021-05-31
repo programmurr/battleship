@@ -85,7 +85,7 @@ function Game(props) {
       setHumanWin(true);
       return;
     }
-    setTimeout(() => computerTurn(), 0);
+    setTimeout(() => computerTurn(), 500);
   }, [userTurn])
 
   const handlePlayerTurn = (coord) => {
