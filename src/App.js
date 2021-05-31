@@ -16,6 +16,10 @@ function App() {
     setHumanBoard(newBoard);
   }
 
+  const handleBoardReset = () => {
+    setHumanBoard(GameBoardFactory());
+  }
+
   return (
     <Router>
       <div className="App">
@@ -24,10 +28,17 @@ function App() {
         </div>
         <Switch>
           <Route exact path="/">
-            <InitializeHumanBoard humanBoard={humanBoard} updateBoard={handleBoardUpdate}/>
+            <InitializeHumanBoard 
+              humanBoard={humanBoard} 
+              updateBoard={handleBoardUpdate}
+            />
           </Route>
           <Route exact path="/game">
-            <Game humanBoard={humanBoard} updateBoard={handleBoardUpdate}/>
+            <Game 
+              humanBoard={humanBoard} 
+              updateBoard={handleBoardUpdate}
+              resetHumanBoard={handleBoardReset}
+            />
           </Route>
         </Switch>
       </div>

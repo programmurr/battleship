@@ -46,17 +46,17 @@ function PlayerFactory() {
       rows.forEach((row) => {
         if (typeof row[y - 1] === 'string') {
           coordsArray.push(row[y - 1]);
-        } else {
+        } else if (typeof row[y - 1] === 'object') {
           coordsArray.push(row[y - 1].hull[0]);
         }
         if (typeof row[y] === 'string') {
           coordsArray.push(row[y]);
-        } else {
+        } else if (typeof row[y] === 'object') {
           coordsArray.push(row[y].hull[0]);
         }
         if (typeof row[y + 1] === 'string') {
           coordsArray.push(row[y + 1]);
-        } else {
+        } else if (typeof row[y + 1] === 'object') {
           coordsArray.push(row[y + 1].hull[0]);
         }
       })

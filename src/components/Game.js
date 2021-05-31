@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Boards from './Boards';
 import GameBoardFactory from '../factories/GameBoardFactory';
 import ShipFactory from '../factories/ShipFactory';
@@ -11,7 +12,10 @@ function Game(props) {
   const [ computer, setComputer ] = useState(PlayerFactory());
   const [ computerBoard, setComputerBoard ] = useState(GameBoardFactory());
   const [ userTurn, setUserTurn ] = useState(true);
-  let [ roundCounter, setRoundCounter ] = useState(0);
+  const [ roundCounter, setRoundCounter ] = useState(0);
+  const [ humanWin, setHumanWin ] = useState(false);
+  const [ computerWin, setComputerWin ] = useState(false);
+
 
   const computerCoords = [
     ['J7', 'J8', 'J9', 'J10'],
@@ -36,12 +40,21 @@ function Game(props) {
     })
   }
 
+  const resetGame = () => {
+    setPlayer(PlayerFactory());
+    setComputer(PlayerFactory());
+    setComputerBoard(GameBoardFactory());
+    setUserTurn(true);
+    setRoundCounter(0);
+    setHumanWin(false);
+    setComputerWin(false);
+    props.resetHumanBoard();
+  }
+
   const computerTurn = () => {
     if (humanBoard.allShipsSunk()) {
-      if (window.confirm('Oh no! You lost! Would you like to redeem yourself and play again?')) {
-        window.location.reload();
-      }
-      // worry about the user clicking cancel when we get there
+      setComputerWin(true);
+      return;
     }
     if (userTurn === false) {
       const newComputer = Object.assign({}, computer);
@@ -53,12 +66,11 @@ function Game(props) {
       }
       if (newHumanBoard.receiveAttack(currentAttack) !== undefined) {
         computer.calculateNextAttackRange(currentAttack, newHumanBoard.board);
-        console.log(newHumanBoard);
       }
       props.updateBoard(newHumanBoard);
       setComputer(newComputer);
       setUserTurn(true);
-      setRoundCounter(roundCounter += 1);
+      setRoundCounter(roundCounter + 1);
     }
   }
 
@@ -70,10 +82,8 @@ function Game(props) {
 
   useEffect(() => {
     if (computerBoard.allShipsSunk()) {
-      if (window.confirm('Congratulations! You won! Would you like to play again?')) {
-        window.location.reload();
-      }
-      // worry about the user clicking cancel when we get there
+      setHumanWin(true);
+      return;
     }
     setTimeout(() => computerTurn(), 0);
   }, [userTurn])
@@ -88,7 +98,7 @@ function Game(props) {
         setUserTurn(false);
         setPlayer(newPlayer);
         setComputerBoard(newComputerBoard);
-        setRoundCounter(roundCounter += 1);
+        setRoundCounter(roundCounter + 1);
       } catch (e) {
         alert(e.message)
       }
@@ -98,7 +108,21 @@ function Game(props) {
   return (
     <div className="Game">
       <div className="GameControl">
-          <div className="TurnDisplay">
+      {humanWin ? 
+        <div className="VictoryDeclaration">
+          Congratulations! You won! 
+          <Link to="/" onClick={resetGame}> 
+            Click here to play again!
+          </Link>
+        </div>
+        : computerWin ? 
+          <div className="VictoryDeclaration">
+            Oh no, you lost! 
+            <Link to="/" onClick={resetGame}> 
+              Click here to redeem yourself and play again!
+            </Link>
+          </div>
+          : <div className="TurnDisplay">
             {userTurn ? 
               <div className="Turn">
                 Your Turn!
@@ -108,6 +132,7 @@ function Game(props) {
               </div>
             }
           </div>
+      }
       </div>
       <Boards 
         humanBoard={humanBoard}
