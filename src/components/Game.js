@@ -110,16 +110,16 @@ function Game(props) {
       <div className="GameControl">
       {humanWin ? 
         <div className="VictoryDeclaration">
-          Congratulations! You won! 
+          <p>Congratulations! You won!</p> 
           <Link to="/" onClick={resetGame}> 
-            Click here to play again!
+            <button>Click here to play again!</button>
           </Link>
         </div>
         : computerWin ? 
           <div className="VictoryDeclaration">
-            Oh no, you lost! 
+            <p>Oh no, you lost!</p> 
             <Link to="/" onClick={resetGame}> 
-              Click here to redeem yourself and play again!
+              <button>Click here to play again!</button>
             </Link>
           </div>
           : <div className="TurnDisplay">

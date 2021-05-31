@@ -49,19 +49,18 @@ body {
 /* Initialize Player Page */
 .InitializeHuman {
   height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
-  grid-template-rows: 0.5fr 2fr 0.2fr;
-  gap: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ShipPlacement {
-  grid-column: 2/3;
-  grid-row: 1/2;
   background-color: var(--water);
   border: 5px outset var(--light-water);
   border-radius: 10px;
-  height: 25vh;
+  height: 20vh;
+  width: 60%;
+  max-width: 1000px;
 }
 
 .ShipPlacement > img:hover {
@@ -73,7 +72,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+.ShipDragPara {
+  margin-top: 0.5vh;
 }
 
 .Ship4,
@@ -83,26 +86,30 @@ body {
   border: 1px solid var(--water);
 }
 
+.Ship1H,
+.BoardShip1 {
+  height: 5.5vh;
+  width: 5.5vh;
+}
+
 .Ship4 {
-  height: 4vh;
-  width: 16vw;
+  height: 3vh;
+  width: 12vw;
   max-height: 25px;
   max-width: 152px;
 }
 
 .Ship3 {
-  height: 4vh;
-  width: 12vw;
+  height: 3vh;
+  width: 9vw;
   max-height: 25px;
   max-width: 114px;
 }
 
 .Ship2H,
 .Ship2V {
-  height: 4vh;
-  width: 8vw;
-  max-height: 25px;
-  max-width: 76px;
+  height: 6vh;
+  width: 6vw;
 }
 
 .Ship2H,
@@ -118,15 +125,15 @@ body {
 }
 
 .Ship1 {
-  height: 4vh;
-  width: 4vw;
+  height: 3vh;
+  width: 3vw;
   max-height: 25px;
   max-width: 38px;
 }
 
 .RotateButton {
-  height: 4vh;
-  width: 4vh;
+  height: 3vh;
+  width: 3vh;
 }
 
 .RotateButton:hover {
@@ -134,14 +141,11 @@ body {
 }
 
 .HumanBoard {
-  width: 40vw;
-  height: 40vw;
+  margin-top: 1vh;
   grid-column: 2/3;
   grid-row: 2/3;
   justify-self: center;
   display: grid;
-  grid-template-columns: repeat(10, 4vw);
-  grid-template-rows: repeat(10, 4vw);
   background-color: var(--water);
   border-top: 2px solid var(--light-water);
   border-left: 2px solid var(--light-water);
@@ -155,7 +159,7 @@ body {
   align-items: center;
   border-right: 2px solid var(--light-water);
   border-bottom: 2px solid var(--light-water);
-  font-size: 1.5vw;
+  font-size: 0.5rem;
 }
 
 .PlayerCellOccupiedV {
@@ -164,8 +168,15 @@ body {
   border-bottom: 0;
 }
 
+.CellCoord {
+  font-size: 1rem;
+}
+
 .CellCoordOccupiedH,
 .CellCoordOccupiedV {
+  font-size: 1rem;
+  max-width: 60px;
+  max-height: 60px;
   margin-left: 1vw;
   justify-self: start;
   align-self: center;
@@ -186,21 +197,29 @@ body {
   grid-row: 1/2;
 }
 
-.BoardShip2 {
-  height: 3.75vh;
-  width: 7.75vw;
+.BoardShip2,
+.Ship2H {
+  height: 5.5vh;
+  width: 5.75vw;
 }
 
 .BoardShip3 {
-  height: 3.75vh;
-  width: 11.75vw;
+  height: 5.75vh;
+  width: 8.75vw;
 }
 
 .BoardShip4 {
-  height: 3.5vh;
-  width: 15.75vw;
+  height: 5.5vh;
+  width: 11.75vw;
 }
 
+.StartGameButton {
+  margin-top: 8vh;
+}
+.StartGameButton > button {
+  font-size: 1.5rem;
+}
+/* Game Page */
 .GameControl {
   width: 90vw;
   background-color: var(--water);
@@ -237,10 +256,9 @@ body {
 .ComputerBoard,
 .HumanBoard {
   justify-self: center;
-  width: 40vw;
   display: grid;
-  grid-template-columns: repeat(10, 4vw);
-  grid-template-rows: repeat(10, 4vw);
+  grid-template-columns: repeat(10, 3vw);
+  grid-template-rows: repeat(10, 3vw);
   background-color: var(--water);
   border-top: 2px solid var(--light-water);
   border-left: 2px solid var(--light-water);

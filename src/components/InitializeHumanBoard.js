@@ -71,7 +71,7 @@ function InitializeHumanBoard(props) {
       <div className="ShipPlacement">
           {humanShips.length > 0
           ? <div className="ShipDragHome">
-            Click and drag your ship to the Board!
+            <p className="ShipDragPara">Click and drag your ship to the Board!</p>
               <img 
                 draggable
                 src={displayShip.src}
@@ -87,7 +87,9 @@ function InitializeHumanBoard(props) {
               />
             </div>
           : <div className="ShipDragHome">
-              <Link to="/game">Start Game!</Link>
+              <Link to="/game" className="StartGameButton">
+                <button>Start Game!</button>
+              </Link>
             </div>
           }
       </div>
