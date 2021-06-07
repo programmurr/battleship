@@ -6,12 +6,7 @@ function GameBoardFactory() {
   let missedAttacks = [];
   let successfulAttacks = [];
 
-  const createBoard = () => {
-    const board = GameUtils().mockBoard;
-    return board;
-  }
-
-  const board = createBoard();
+  const board = GameUtils().mockBoard;
 
   const placeShip = (coords, ship) => {
     // pair[0] is the ship
@@ -56,6 +51,8 @@ function GameBoardFactory() {
     }
     return false;
   }
+
+  
 
   return { 
     board, 

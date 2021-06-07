@@ -4,6 +4,7 @@ import Boards from './Boards';
 import GameBoardFactory from '../factories/GameBoardFactory';
 import ShipFactory from '../factories/ShipFactory';
 import PlayerFactory from '../factories/PlayerFactory';
+import GameUtils from '../utils/GameUtils';
 
 function Game(props) {
   const { humanBoard } = props;
@@ -34,6 +35,7 @@ function Game(props) {
     // randomize the coords
     // match an orientation to the coords
     // placeShip with coord, Ship and orientation
+    const randomCoords = GameUtils().randomCoordList();
     coords.forEach((coord) => {
       computerBoard.placeShip(coord, ShipFactory(coord.length))
       setComputerBoard(computerBoard)

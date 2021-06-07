@@ -1,6 +1,7 @@
 import ShipFactory from './factories/ShipFactory';
 import GameBoardFactory from './factories/GameBoardFactory';
 import PlayerFactory from './factories/PlayerFactory';
+import GameUtils from './utils/GameUtils';
 
 var lodash = require('lodash');
 
@@ -448,6 +449,13 @@ describe('PlayerFactory', () => {
     expect(player.calculateNextAttackRange('B3', mockBoard)).toEqual(
       ['B1', 'C1', 'A3', 'C3', 'A4', 'B4', 'C4']
     )
+  })
+})
+
+describe('GameUtils', () => {
+  it('Generates a random list of coordinates', () => {
+    const coords = GameUtils().randomCoordList();
+    console.log(coords);
   })
 })
 

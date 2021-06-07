@@ -21,11 +21,8 @@ function PlayerFactory() {
       const newAttack = nextAttacks.splice(nextAttacks.length - 1, 1);
       return newAttack;
     } else {
-      const mockBoard = GameUtils().mockBoard;
       while (true) {
-        const x = Math.floor(Math.random() * 10);
-        const y = Math.floor(Math.random() * 10);
-        const attackCoord = mockBoard[x][y];
+        const attackCoord = GameUtils().randomCoord();
         if (attacks.includes(attackCoord)) {
           continue;
         } else {
