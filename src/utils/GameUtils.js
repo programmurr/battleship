@@ -71,17 +71,7 @@ export default function GameUtils() {
       const Y = pair[1]
       return mockBoard[X][Y]
     })
-
-    const cleanCoords = coords.filter(
-      (pair) => (flatBoard.includes(pair[0]) === false)
-      && (flatBoard.includes(pair[1]) === false)
-    )
-
-    if (cleanCoords.length === 2) {
-      return cleanCoords;
-    } else {
-      return false;
-    }
+    return coords;
   }
 
 
@@ -90,66 +80,77 @@ export default function GameUtils() {
     let occupiedList = [];
 
     // Generate 4 single coords
-    for (let i = 0; i < 4; i ++) {
-      let validCoordFound = false;
-      if (validCoordFound === false) {
-        const randCoord = randomCoord();
-        if (flatBoard.includes(randCoord)) {
-          validCoordFound = true;
-          occupiedList.push([randCoord]);
-          const index = flatBoard.findIndex((element) => element === randCoord);
-          flatBoard.splice(index, 1);
+    while (occupiedList.length < 4) {
+      const randCoord = randomCoord();
+      if (flatBoard.includes(randCoord)) {
+        occupiedList.push([randCoord]);
+        const index = flatBoard.findIndex((element) => element === randCoord);
+        flatBoard.splice(index, 1);
+      }
+    }
+
+    // Generate 3 2-length coords
+    // As far as I've debugged, the single coords is working fine
+    // Check console logs for the rest
+    // ALL I NEED TO DO IS GET THE COORDS LIST
+    // COMPARE IT TO THE FLATBOARD
+    // IF ANY OF THOSE COORDINATES ARE IN THE FLATBOAT
+    // THEN JUST GET A NEW COORD
+    while (occupiedList.length < 7) {
+      const randCoord = randomCoord();
+
+      if (flatBoard.includes(randCoord)) {
+        const direction = randomDirection();
+        const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 2);
+
+        if (coordsList) {
+          console.log(coordsList)
+          console.log(flatBoard)
+          occupiedList.push([coordsList]);
+          const indexes = coordsList.map(
+            (coord) => flatBoard.findIndex(
+              (element) => element === coord));
+          indexes.forEach((index) => flatBoard.splice(index, 1));
         }
       }
     }
 
-    // Generate 3 double coords
-    for (let i = 0; i < 3; i++) {
-      let validCoordFound = false;
+    // Generate 2 3-length coords
+    while (occupiedList.length < 9) {
+      const randCoord = randomCoord();
 
-      if (validCoordFound === false) {
-        const randCoord = randomCoord();
+      if (flatBoard.includes(randCoord)) {
+        const direction = randomDirection();
+        const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 3);
 
-        if (flatBoard.includes(randCoord)) {
-          const direction = randomDirection();
-          const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 2);
-
-          if (coordsList) {
-            validCoordFound = true;
-            occupiedList.push([coordsList]);
-            const indexes = coordsList.map(
-              (coord) => flatBoard.findIndex(
-                (element) => element === coord));
-            indexes.forEach((index) => flatBoard.splice(index, 1));
-          }
-        } else {
-          i--;
+        if (coordsList) {
+          console.log(coordsList)
+          console.log(flatBoard)
+          occupiedList.push([coordsList]);
+          const indexes = coordsList.map(
+            (coord) => flatBoard.findIndex(
+              (element) => element === coord));
+          indexes.forEach((index) => flatBoard.splice(index, 1));
         }
       }
     }
 
-    // Generate 2 triple coords
-    // NOT WORKING
-    for (let i = 0; i < 2; i++) {
-      let validCoordFound = false;
+    // Generate 1 4-length coord
+    while (occupiedList.length < 10) {
+      const randCoord = randomCoord();
 
-      if (validCoordFound === false) {
-        const randCoord = randomCoord();
+      if (flatBoard.includes(randCoord)) {
+        const direction = randomDirection();
+        const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 4);
 
-        if (flatBoard.includes(randCoord)) {
-          const direction = randomDirection();
-          const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 3);
-
-          if (coordsList) {
-            validCoordFound = true;
-            occupiedList.push([coordsList]);
-            const indexes = coordsList.map(
-              (coord) => flatBoard.findIndex(
-                (element) => element === coord));
-            indexes.forEach((index) => flatBoard.splice(index, 1));
-          }
-        } else {
-          i--;
+        if (coordsList) {
+          console.log(coordsList)
+          console.log(flatBoard)
+          occupiedList.push([coordsList]);
+          const indexes = coordsList.map(
+            (coord) => flatBoard.findIndex(
+              (element) => element === coord));
+          indexes.forEach((index) => flatBoard.splice(index, 1));
         }
       }
     }

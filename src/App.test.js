@@ -455,7 +455,9 @@ describe('PlayerFactory', () => {
 describe('GameUtils', () => {
   it('Generates a random list of coordinates', () => {
     const coords = GameUtils().randomCoordList();
-    console.log(coords);
+    console.log(coords)
+    const flatCoords = lodash.flattenDeep(coords);
+    expect(lodash.uniq(flatCoords)).toEqual(flatCoords);
   })
 })
 
