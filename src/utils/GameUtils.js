@@ -1,5 +1,3 @@
-import { difference } from 'lodash';
-
 var lodash = require('lodash');
 
 export default function GameUtils() {
@@ -84,18 +82,11 @@ export default function GameUtils() {
       const randCoord = randomCoord();
       if (flatBoard.includes(randCoord)) {
         occupiedList.push([randCoord]);
-        const index = flatBoard.findIndex((element) => element === randCoord);
-        flatBoard.splice(index, 1);
+        flatBoard = lodash.difference(flatBoard, [randCoord]);
       }
     }
 
     // Generate 3 2-length coords
-    // As far as I've debugged, the single coords is working fine
-    // Check console logs for the rest
-    // ALL I NEED TO DO IS GET THE COORDS LIST
-    // COMPARE IT TO THE FLATBOARD
-    // IF ANY OF THOSE COORDINATES ARE IN THE FLATBOAT
-    // THEN JUST GET A NEW COORD
     while (occupiedList.length < 7) {
       const randCoord = randomCoord();
 
@@ -103,14 +94,11 @@ export default function GameUtils() {
         const direction = randomDirection();
         const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 2);
 
-        if (coordsList) {
-          console.log(coordsList)
-          console.log(flatBoard)
+        if (coordsList
+          && (coordsList.every((coord) => flatBoard.includes(coord)))
+        ) {
           occupiedList.push([coordsList]);
-          const indexes = coordsList.map(
-            (coord) => flatBoard.findIndex(
-              (element) => element === coord));
-          indexes.forEach((index) => flatBoard.splice(index, 1));
+          flatBoard = lodash.difference(flatBoard, coordsList);
         }
       }
     }
@@ -123,14 +111,11 @@ export default function GameUtils() {
         const direction = randomDirection();
         const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 3);
 
-        if (coordsList) {
-          console.log(coordsList)
-          console.log(flatBoard)
+        if (coordsList
+          && (coordsList.every((coord) => flatBoard.includes(coord)))
+        ) {
           occupiedList.push([coordsList]);
-          const indexes = coordsList.map(
-            (coord) => flatBoard.findIndex(
-              (element) => element === coord));
-          indexes.forEach((index) => flatBoard.splice(index, 1));
+          flatBoard = lodash.difference(flatBoard, coordsList);
         }
       }
     }
@@ -143,14 +128,11 @@ export default function GameUtils() {
         const direction = randomDirection();
         const coordsList = generateAdjascentCoords(direction, randCoord, flatBoard, 4);
 
-        if (coordsList) {
-          console.log(coordsList)
-          console.log(flatBoard)
+        if (coordsList
+          && (coordsList.every((coord) => flatBoard.includes(coord)))
+        ) {
           occupiedList.push([coordsList]);
-          const indexes = coordsList.map(
-            (coord) => flatBoard.findIndex(
-              (element) => element === coord));
-          indexes.forEach((index) => flatBoard.splice(index, 1));
+          flatBoard = lodash.difference(flatBoard, coordsList);
         }
       }
     }

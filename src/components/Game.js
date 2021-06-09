@@ -18,25 +18,22 @@ function Game(props) {
   const [ computerWin, setComputerWin ] = useState(false);
 
 
-  const computerCoords = [
-    ['J7', 'J8', 'J9', 'J10'],
-    ['I8', 'I9', 'I10'],
-    ['H8', 'H9', 'H10'],
-    ['G9', 'G10'],
-    ['F9', 'F10'],
-    ['E9', 'E10'],
-    ['D10'],
-    ['C10'],
-    ['B10'],
-    ['A10'],
-  ]
+  // const computerCoords = [
+  //   ['J7', 'J8', 'J9', 'J10'],
+  //   ['I8', 'I9', 'I10'],
+  //   ['H8', 'H9', 'H10'],
+  //   ['G9', 'G10'],
+  //   ['F9', 'F10'],
+  //   ['E9', 'E10'],
+  //   ['D10'],
+  //   ['C10'],
+  //   ['B10'],
+  //   ['A10'],
+  // ]
 
-  const initializeComputerBoard = (coords) => {
-    // randomize the coords
-    // match an orientation to the coords
-    // placeShip with coord, Ship and orientation
+  const initializeComputerBoard = () => {
     const randomCoords = GameUtils().randomCoordList();
-    coords.forEach((coord) => {
+    randomCoords.forEach((coord) => {
       computerBoard.placeShip(coord, ShipFactory(coord.length))
       setComputerBoard(computerBoard)
     })
@@ -78,7 +75,7 @@ function Game(props) {
 
   useEffect(() => {
     if (roundCounter === 0) {
-      initializeComputerBoard(computerCoords);
+      initializeComputerBoard();
     }
   })
 
