@@ -1,3 +1,5 @@
+import GameUtils from '../utils/GameUtils';
+
 var lodash = require('lodash');
 
 function PlayerFactory() {
@@ -19,33 +21,14 @@ function PlayerFactory() {
       const newAttack = nextAttacks.splice(nextAttacks.length - 1, 1);
       return newAttack;
     } else {
-      const height = lodash.range(1, 11);
-      const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
-      const mockBoard = height.map((num) => {
-        return length.map((char) => {
-          return `${char}${num}`;
-        });
-      });
       while (true) {
-        const x = Math.floor(Math.random() * 10);
-        const y = Math.floor(Math.random() * 10);
-        const attackCoord = mockBoard[x][y];
+        const attackCoord = GameUtils().randomCoord();
         if (attacks.includes(attackCoord)) {
           continue;
         } else {
           attacks.push(attackCoord);
           return attacks;
         }
-      }
-    }
-  }
-
-  const locatedCoordIndexes = (coord, board) => {
-    for (let i = 0; i < board.length; i++) {
-      const row = board[i];
-      if (row.includes(coord)) {
-        const nestedIndex = row.findIndex((pos) => pos === coord);
-        return [i, nestedIndex];
       }
     }
   }
@@ -58,9 +41,21 @@ function PlayerFactory() {
       const allRows = [board[x - 1], board[x], board[x + 1]];
       const rows = allRows.filter((row) => row !== undefined);
       rows.forEach((row) => {
-        coordsArray.push(row[y - 1]);
-        coordsArray.push(row[y]);
-        coordsArray.push(row[y + 1]);
+        if (typeof row[y - 1] === 'string') {
+          coordsArray.push(row[y - 1]);
+        } else if (typeof row[y - 1] === 'object') {
+          coordsArray.push(row[y - 1].hull[0]);
+        }
+        if (typeof row[y] === 'string') {
+          coordsArray.push(row[y]);
+        } else if (typeof row[y] === 'object') {
+          coordsArray.push(row[y].hull[0]);
+        }
+        if (typeof row[y + 1] === 'string') {
+          coordsArray.push(row[y + 1]);
+        } else if (typeof row[y + 1] === 'object') {
+          coordsArray.push(row[y + 1].hull[0]);
+        }
       })
     } catch (err) {
       console.log(err.message);
@@ -78,7 +73,7 @@ function PlayerFactory() {
   }
 
   const calculateNextAttackRange = (position, board) => {
-    const xAndYIndexes = locatedCoordIndexes(position, board);
+    const xAndYIndexes = GameUtils().coordIndexes(position, board);
     const coords = getCoords(xAndYIndexes, board);
     const finalCoords = cleanCoords(coords, position);
     finalCoords.forEach((coord) => {

@@ -1,4 +1,4 @@
-var lodash = require('lodash')
+import GameUtils from '../utils/GameUtils';
 
 function GameBoardFactory() {
 
@@ -6,20 +6,20 @@ function GameBoardFactory() {
   let missedAttacks = [];
   let successfulAttacks = [];
 
-  const createBoard = () => {
-    const height = lodash.range(1, 11);
-    const length = lodash.range(65, 75).map((code) => String.fromCharCode(code));
-    const board = height.map((num) => {
-      return length.map((char) => {
-        return `${char}${num}`;
-      });
-    });
-    return board;
-  }
-
-  const board = createBoard();
+  const board = GameUtils().mockBoard;
 
   const placeShip = (coords, ship) => {
+    // pair[0] is the ship
+    // pair[1] is an array of the ship coords
+    for (let i = 0; i < occupiedCoords.length; i++) {
+      const pair = occupiedCoords[i];
+      for (let j = 0; j < coords.length ;j++) {
+        const currentCoord = coords[j];
+        if (pair[1].includes(currentCoord)) {
+          throw new Error('Ship placement overlaps');
+        }
+      }
+    }
     occupiedCoords.push([ship, coords]);
     return occupiedCoords;
   }
@@ -51,6 +51,8 @@ function GameBoardFactory() {
     }
     return false;
   }
+
+  
 
   return { 
     board, 
