@@ -87,7 +87,7 @@ function InitializeHumanBoard(props) {
               />
             </div>
           : <div className="ShipDragHome">
-              <Link to="/game" className="StartGameButton">
+              <Link to="/battleship/game" className="StartGameButton">
                 <button>Start Game!</button>
               </Link>
             </div>

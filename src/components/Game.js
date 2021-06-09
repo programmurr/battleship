@@ -111,14 +111,14 @@ function Game(props) {
       {humanWin ? 
         <div className="VictoryDeclaration">
           <p>Congratulations! You won!</p> 
-          <Link to="/" onClick={resetGame}> 
+          <Link to="/battleship" onClick={resetGame}> 
             <button>Click here to play again!</button>
           </Link>
         </div>
         : computerWin ? 
           <div className="VictoryDeclaration">
             <p>Oh no, you lost!</p> 
-            <Link to="/" onClick={resetGame}> 
+            <Link to="/battleship" onClick={resetGame}> 
               <button>Click here to play again!</button>
             </Link>
           </div>

@@ -27,13 +27,13 @@ function App() {
           <h1>Battleship</h1>
         </div>
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/battleship">
             <InitializeHumanBoard 
               humanBoard={humanBoard} 
               updateBoard={handleBoardUpdate}
             />
           </Route>
-          <Route exact path="/game">
+          <Route exact path="/battleship/game">
             <Game 
               humanBoard={humanBoard} 
               updateBoard={handleBoardUpdate}
