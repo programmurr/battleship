@@ -32,6 +32,7 @@ function Game(props) {
   // ]
 
   const initializeComputerBoard = () => {
+    debugger;
     const randomCoords = GameUtils().randomCoordList();
     randomCoords.forEach((coord) => {
       computerBoard.placeShip(coord, ShipFactory(coord.length))

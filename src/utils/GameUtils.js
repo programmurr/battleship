@@ -97,7 +97,7 @@ export default function GameUtils() {
         if (coordsList
           && (coordsList.every((coord) => flatBoard.includes(coord)))
         ) {
-          occupiedList.push([coordsList]);
+          occupiedList.push(coordsList);
           flatBoard = lodash.difference(flatBoard, coordsList);
         }
       }
@@ -114,7 +114,7 @@ export default function GameUtils() {
         if (coordsList
           && (coordsList.every((coord) => flatBoard.includes(coord)))
         ) {
-          occupiedList.push([coordsList]);
+          occupiedList.push(coordsList);
           flatBoard = lodash.difference(flatBoard, coordsList);
         }
       }
@@ -131,7 +131,7 @@ export default function GameUtils() {
         if (coordsList
           && (coordsList.every((coord) => flatBoard.includes(coord)))
         ) {
-          occupiedList.push([coordsList]);
+          occupiedList.push(coordsList);
           flatBoard = lodash.difference(flatBoard, coordsList);
         }
       }
